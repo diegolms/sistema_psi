@@ -43,13 +43,14 @@ $( document ).ready(function() {
                                 <div id="pay-invoice">
                                     <div class="card-body">
 										<%= form_with(model: lancamento, local: true) do |form| %>
+										
 
 										<div class="btn-group btn-group-toggle" data-toggle="buttons">
 											<label class="btn btn-primary active">
-												<input type="radio" name="options" id="receita" autocomplete="off" checked> Receita
+												<%= form.radio_button :tipo, 1 %> Receita
 											</label>
 											<label class="btn btn-primary">
-												<input type="radio" name="options" id="despesa" autocomplete="off"> Despesa
+												<%= form.radio_button :tipo, 2 %> Despesa
 											</label>
 										</div>
 										
@@ -57,12 +58,12 @@ $( document ).ready(function() {
 											  <div class="form-row">
 											  <div class="form-group col-md-3">
 												  <label for="inputPassword4">Data Pagamento</label>
-												  <%= form.text_field :data_pagamento, autocomplete: "nome", class: "form-control", required: true %>
+												  <%= form.text_field :data_pagamento, autocomplete: "nome", class: "form-control", required: true, :value=>"#{@lancamento.data_pagamento.strftime("%d/%m/%Y") unless @lancamento.new_record?}" %>
 												</div>
 												
 											    <div class="form-group col-md-3">
 												  <label for="inputEmail4">Data Vencimento</label>
-												  <%= form.text_field :data_vencimento, autocomplete: "nome", class: "form-control", required: true %>
+												  <%= form.text_field :data_vencimento, autocomplete: "nome", class: "form-control", required: true, :value=>"#{@lancamento.data_vencimento.strftime("%d/%m/%Y") unless @lancamento.new_record?}" %>
 												</div>
 												
 											  </div>

@@ -51,8 +51,8 @@
 									  <tr>
 										<th scope="col">#</th>
 										<th scope="col">Descrição</th>
-										<th scope="col">Vencimento</th>
 										<th scope="col">Pagamento</th>
+										<th scope="col">Vencimento</th>										
 										<th scope="col">Tipo</th>
 										<th scope="col">Categoria</th>
 										<th scope="col">Pessoa</th>
@@ -66,8 +66,8 @@
 										  <tr>
 											<th scope="row"><%= lancamento.id %></th>
 											<td><%= lancamento.descricao %></td>
-											<td><%= lancamento.data_vencimento.strftime("%d/%m/%Y") %></td>
 											<td><%= lancamento.data_pagamento.strftime("%d/%m/%Y") %></td>
+											<td><%= lancamento.data_vencimento.strftime("%d/%m/%Y") %></td>
 											<td><%= Lancamento::TIPO_LANCAMENTO.invert[lancamento.tipo] %></td>
 											<td><%= lancamento.categoria.nome %></td>
 											<td><%= lancamento.pessoa.nome %></td>
