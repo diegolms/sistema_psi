@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jesus do Porto V</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= stylesheet_link_tag    'style', media: 'all' %>
+	
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+	<%= javascript_include_tag 'ui.datepicker-pt-BR'%>
+	
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Sufee Admin - HTML5 Admin Template">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'> 
+	
+  </head>
+
+  <body>
+		<% if user_signed_in? %>
+		<%= render "shared/navigation_left" %>
+		<div id="right-panel" class="right-panel">		
+			<%= render "shared/navigation_header" %>
+		<% end %>  
+		<%= yield %>
+		</div>
+  </body>
+</html>

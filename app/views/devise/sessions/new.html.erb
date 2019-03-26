@@ -1,0 +1,53 @@
+<body class="bg-dark">
+
+
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+				<div class="login-logo">
+                    <a href="#">
+                        <p>Jesus do Porto V</p>
+                    </a>
+                </div>
+
+					<% if !devise_error_messages!.empty? %>
+						<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show" role="alert">
+							<span class="badge badge-pill badge-danger">Erro</span>
+								 <%= devise_error_messages! %>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>	
+					<% end %>
+			
+                <div class="login-form">
+                    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                        <div class="form-group">
+                            <label>Email</label>
+							<%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true %>
+                        </div>
+                            <div class="form-group">
+                                <label>Senha</label>
+								<%= f.password_field :password, autocomplete: "current-password", class: "form-control", required: true %>
+                        </div>
+                                <div class="checkbox">
+                                    <label>
+                                <input type="checkbox"> Lembrar-me
+                            </label>
+                            <label class="pull-right">
+								<%= link_to "Esqueceu sua senha?", new_password_path(resource_name) %>
+                            </label>
+
+                                </div>
+								<%= f.submit "ENTRAR", class:"btn btn-success btn-flat m-b-30 m-t-30"  %>
+                                <div class="register-link m-t-15 text-center">
+									<br>
+									<p>Não tem conta? <%= link_to "Cadastre-se", new_registration_path(resource_name) %><br /></p>
+                                </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

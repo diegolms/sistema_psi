@@ -1,0 +1,115 @@
+﻿<script>
+$( document ).ready(function() {
+		$('#lancamento_data_vencimento').datepicker();
+		$('#lancamento_data_pagamento').datepicker();
+		$('#lancamento_valor').mask('000.000.000.000.000,00', {reverse: true});
+
+});
+</script>
+
+<div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Lançamentos</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+							<li>Gerencial</li>
+                            <li>Cadastros</li>
+                            <li>Lançamentos</li>
+							<li class="active">Cadastrar</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+            <!--div class="animated fadeIn"-->
+                <div class="row">
+				
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title"><%= @lancamento.new_record? ? 'Novo Lançamento' : 'Editar Lançamento' %></strong>
+                            </div>
+                            <div class="card-body">
+                                <!-- Credit Card -->
+                                <div id="pay-invoice">
+                                    <div class="card-body">
+										<%= form_with(model: lancamento, local: true) do |form| %>
+
+										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+											<label class="btn btn-primary active">
+												<input type="radio" name="options" id="receita" autocomplete="off" checked> Receita
+											</label>
+											<label class="btn btn-primary">
+												<input type="radio" name="options" id="despesa" autocomplete="off"> Despesa
+											</label>
+										</div>
+										
+										<br><br>
+											  <div class="form-row">
+											  <div class="form-group col-md-3">
+												  <label for="inputPassword4">Data Pagamento</label>
+												  <%= form.text_field :data_pagamento, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+												
+											    <div class="form-group col-md-3">
+												  <label for="inputEmail4">Data Vencimento</label>
+												  <%= form.text_field :data_vencimento, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+												
+											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-9">
+												  <label for="inputCity">Descrição</label>
+												  <%= form.text_field :descricao, autofocus: true, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+												<div class="form-group col-md-3">
+												  <label for="inputState">Valor</label>
+												  <%= form.text_field :valor, autofocus: true, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-6">
+												   <label>Categoria</label>
+												   <%= form.select :categoria_id, Categorium.all.order("nome").each.map {|l| [l.nome, l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+                  
+												</div>
+												<div class="form-group col-md-6">
+												  <label for="inputState">Pessoa</label>
+												  <%= form.select :pessoa_id, Pessoa.all.order("nome").each.map {|l| [l.nome, l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+												</div>
+											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-12">
+												  <label for="inputState">Observação</label>
+												  <%= form.text_area :observacao, autofocus: true, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+											  </div>
+											  
+											  
+											  <%= link_to 'Cancelar', lancamentos_path, class: "btn btn-danger btn-sm", style: "color: white" %>
+									    	  <%= form.submit @lancamento.new_record? ? 'Cadastrar' : 'Editar ' , class:"btn btn-success btn-sm m-b-30 m-t-30", style: "color: white" %>											
+                                              
+                                        <% end %>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> <!-- .card -->
+                    </div>
+
+
+                </div>
+            <!--/div--><!-- .animated -->
+        </div><!-- .content -->

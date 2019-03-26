@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Descricao:</strong>
+  <%= @lancamento.descricao %>
+</p>
+
+<p>
+  <strong>Data vencimento:</strong>
+  <%= @lancamento.data_vencimento %>
+</p>
+
+<p>
+  <strong>Data pagamento:</strong>
+  <%= @lancamento.data_pagamento %>
+</p>
+
+<p>
+  <strong>Valor:</strong>
+  <%= @lancamento.valor %>
+</p>
+
+<p>
+  <strong>Observacao:</strong>
+  <%= @lancamento.observacao %>
+</p>
+
+<p>
+  <strong>Categoria:</strong>
+  <%= @lancamento.categoria %>
+</p>
+
+<%= link_to 'Edit', edit_lancamento_path(@lancamento) %> |
+<%= link_to 'Back', lancamentos_path %>

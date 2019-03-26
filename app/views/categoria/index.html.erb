@@ -1,0 +1,82 @@
+<div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Categorias</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+							<li>Gerencial</li>
+                            <li>Cadastros</li>
+                            <li class="active">Categorias</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+		
+				<% flash.each do |key, value| %>
+					  <div class="alert  alert-success alert-dismissible fade show" role="alert">
+						<span class="badge badge-pill badge-success">Successo</span> <%= value %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+				<% end %>
+
+				
+            <!--div class="animated fadeIn"-->
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+									<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
+										<i class="fa fa-plus"></i> Cadastrar
+									<% end %>
+                            </div>
+							
+                            <div class="card-body">
+                                <div class="table-responsive">
+								  <table class="table">
+									<thead>
+									  <tr>
+										<th scope="col">#</th>
+										<th scope="col">Nome</th>
+										<th scope="col"></th>
+									  </tr>
+									</thead>
+									<tbody>
+									  <% @categoria.each do |categorium| %>
+										  <tr>
+											<th scope="row"><%= categorium.id %></th>
+											<td><%= categorium.nome %></td>
+											<td>
+											<%= link_to edit_categorium_path(categorium), class: "btn btn-primary btn-sm", style: "color: white" do %>
+												<i class="fa fa-edit"></i>&nbsp; Editar
+											<% end %>
+											<%= link_to categorium, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
+												<i class="fa fa-times"></i>&nbsp; Remover
+											<% end %>
+											</td>
+										  </tr>
+										<% end %>
+									</tbody>
+								  </table>
+								</div>
+								
+								<%= will_paginate @categoria , previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            <!--/div--><!-- .animated -->
+        </div><!-- .content -->
