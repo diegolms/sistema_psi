@@ -46,11 +46,11 @@ $( document ).ready(function() {
 										
 
 										<div class="btn-group btn-group-toggle" data-toggle="buttons">
-											<label class="btn btn-primary active">
-												<%= form.radio_button :tipo, 1 %> Receita
+											<label class="btn btn-primary">
+												<%= form.radio_button :tipo, 1, checked: @lancamento.new_record? || @lancamento.tipo == Lancamento::TIPO_LANCAMENTO_RECEITA %> Receita
 											</label>
 											<label class="btn btn-primary">
-												<%= form.radio_button :tipo, 2 %> Despesa
+												<%= form.radio_button :tipo, 2, checked: @lancamento.tipo == Lancamento::TIPO_LANCAMENTO_DESPESA%> Despesa
 											</label>
 										</div>
 										
