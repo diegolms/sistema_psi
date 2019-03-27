@@ -4,7 +4,7 @@ class CategoriaController < ApplicationController
   # GET /categoria
   # GET /categoria.json
   def index
-    @categoria = Categorium.all.order('categoria.id desc').paginate(:page => params[:page], :per_page => 10)
+    @categoria = Categorium.where("ativo = #{Constantes::ATIVO}").order('categoria.id desc').paginate(:page => params[:page], :per_page => 10)
 	
   end
 
@@ -55,7 +55,8 @@ class CategoriaController < ApplicationController
   # DELETE /categoria/1
   # DELETE /categoria/1.json
   def destroy
-    @categorium.destroy
+	@categorium.ativo = Constantes::INATIVO
+	@categorium.save!
     respond_to do |format|
       format.html { redirect_to categoria_url, notice: 'Categoria removida com sucesso.' }
       format.json { head :no_content }

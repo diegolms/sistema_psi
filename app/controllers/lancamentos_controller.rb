@@ -4,7 +4,7 @@ class LancamentosController < ApplicationController
   # GET /lancamentos
   # GET /lancamentos.json
   def index
-    @lancamentos = Lancamento.all.order('lancamentos.id desc').paginate(:page => params[:page], :per_page => 10)	
+    @lancamentos = Lancamento.where("ativo = #{Constantes::ATIVO}").order('lancamentos.id desc').paginate(:page => params[:page], :per_page => 10)	
   end
 
   # GET /lancamentos/1
@@ -15,10 +15,15 @@ class LancamentosController < ApplicationController
   # GET /lancamentos/new
   def new
     @lancamento = Lancamento.new
+	@lancamento.tipo = Lancamento::TIPO_LANCAMENTO_RECEITA
+	
+	@categorias = Categorium.where(:ativo => Constantes::ATIVO)
+	@pessoas = Pessoa.where(:ativo => Constantes::ATIVO)
   end
 
   # GET /lancamentos/1/edit
   def edit
+	@lancamento.valor = @lancamento.valor.to_s.gsub(".",",")	
   end
 
   # POST /lancamentos
@@ -27,6 +32,7 @@ class LancamentosController < ApplicationController
     @lancamento = Lancamento.new(lancamento_params)
     @lancamento.pessoa_id = params[:lancamento][:pessoa_id]
     @lancamento.categoria_id = params[:lancamento][:categoria_id]
+	@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
 
     respond_to do |format|
       if @lancamento.save!
@@ -56,7 +62,8 @@ class LancamentosController < ApplicationController
   # DELETE /lancamentos/1
   # DELETE /lancamentos/1.json
   def destroy
-    @lancamento.destroy
+    @lancamento.ativo = Constantes::INATIVO
+	@lancamento.save!
     respond_to do |format|
       format.html { redirect_to lancamentos_url, notice: 'Lancamento excluído com sucesso.' }
       format.json { head :no_content }

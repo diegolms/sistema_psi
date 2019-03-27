@@ -4,7 +4,7 @@ class PessoasController < ApplicationController
   # GET /pessoas
   # GET /pessoas.json
   def index
-    @pessoas = Pessoa.all.order('pessoas.id desc').paginate(:page => params[:page], :per_page => 10)	
+    @pessoas = Pessoa.where("ativo = #{Constantes::ATIVO}").order('pessoas.id desc').paginate(:page => params[:page], :per_page => 10)	
   end
 
   # GET /pessoas/1
@@ -54,7 +54,8 @@ class PessoasController < ApplicationController
   # DELETE /pessoas/1
   # DELETE /pessoas/1.json
   def destroy
-    @pessoa.destroy
+	@pessoa.ativo = Constantes::INATIVO
+	@pessoa.save!
     respond_to do |format|
       format.html { redirect_to pessoas_url, notice: 'Condômino excluído com sucesso.' }
       format.json { head :no_content }
