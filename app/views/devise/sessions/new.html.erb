@@ -9,8 +9,8 @@
                         <p>Jesus do Porto V</p>
                     </a>
                 </div>
-
-					<% if !devise_error_messages!.empty? %>
+				<%p "parametro #{params} " %>
+				<% if !devise_error_messages!.empty? %>
 						<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show" role="alert">
 							<span class="badge badge-pill badge-danger">Erro</span>
 								 <%= devise_error_messages! %>
@@ -19,7 +19,8 @@
 							</button>
 						</div>	
 					<% end %>
-			
+
+
                 <div class="login-form">
                     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                         <div class="form-group">
