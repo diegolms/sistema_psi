@@ -1,7 +1,6 @@
 module DeviseHelper
 
    def devise_error_messages!
-    p "chamou helper"
     flash_alerts = []
     error_key = 'errors.messages.not_saved'
 
@@ -12,13 +11,15 @@ module DeviseHelper
       error_key = 'devise.failure.invalid'
     end
 
+	return "" if flash[:alert].include?("registrar-se antes")
+	
     return "" if resource.errors.empty? && flash_alerts.empty?
     errors = resource.errors.empty? ? flash_alerts : resource.errors.full_messages
 
     messages = errors.map { |msg| content_tag(:li, msg) }.join
     sentence = I18n.t(error_key, :count    => errors.count,
                                  :resource => resource.class.model_name.human.downcase)
-
+								 
     html = <<-HTML
     <div id="error_explanation">
       <ul>#{messages}</ul>
