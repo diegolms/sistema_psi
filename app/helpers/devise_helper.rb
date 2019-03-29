@@ -11,6 +11,7 @@ module DeviseHelper
       error_key = 'devise.failure.invalid'
     end
 
+	return "" if flash[:alert].nil?
 	return "" if flash[:alert].include?("registrar-se antes")
 	
     return "" if resource.errors.empty? && flash_alerts.empty?

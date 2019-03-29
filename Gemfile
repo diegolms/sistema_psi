@@ -70,3 +70,4 @@ gem "font-awesome-rails"
 gem 'will_paginate-bootstrap4'
 gem 'jquery-ui-rails'
 gem 'jquery-mask-plugin'
+ gem 'themify-icons-rails' , github: 'scratch-soft/themify-icons-rails'
