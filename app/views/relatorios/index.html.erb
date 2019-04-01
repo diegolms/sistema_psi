@@ -1,0 +1,75 @@
+<div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Relatórios</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+							<li>Gerencial</li>
+                            <li class="active">Relatórios</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+				
+            <!--div class="animated fadeIn"-->
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+									<%= link_to new_relatorio_path, class: "btn btn-success btn-sm", style: "color: white" do %>
+										<i class="fa fa-plus"></i> Novo
+									<% end %>
+                            </div>
+							
+                            <div class="card-body">
+                                <div class="table-responsive-sm">
+								  <table class="table">
+									<thead>
+									  <tr>
+										<th scope="col">#</th>
+										<th scope="col">Nome</th>
+										<th scope="col">Apartamento</th>
+										<th scope="col"></th>
+										<th scope="col"></th>
+									  </tr>
+									</thead>
+									<tbody>
+									  <% @relatorios.each do |relatorio| %>
+										  <tr>
+											<th scope="row"><%= pessoa.id %></th>
+											<td><%= pessoa.nome %></td>
+											<td><%= pessoa.numero%></td>
+											<td>
+											<%= link_to edit_pessoa_path(pessoa), class: "btn btn-primary btn-sm", style: "color: white" do %>
+												<i class="fa fa-edit"></i>&nbsp; Editar
+											<% end %>
+											<%= link_to pessoa, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
+												<i class="fa fa-times"></i>&nbsp; Remover
+											<% end %>
+											</td>
+											
+										  </tr>
+										<% end %>
+									</tbody>
+								  </table>
+								</div>
+								
+								<%= will_paginate @pessoas, previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            <!--/div>--<!-- .animated -->
+        </div><!-- .content -->

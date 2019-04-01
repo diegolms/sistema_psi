@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_26_144500) do
+ActiveRecord::Schema.define(version: 2019_03_30_194650) do
 
   create_table "categoria", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "nome"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 2019_03_26_144500) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "relatorios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "tipo_relatorio"
+    t.date "data_inicio"
+    t.date "date_fim"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_relatorios_on_user_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -58,4 +68,5 @@ ActiveRecord::Schema.define(version: 2019_03_26_144500) do
 
   add_foreign_key "lancamentos", "categoria", column: "categoria_id"
   add_foreign_key "lancamentos", "pessoas"
+  add_foreign_key "relatorios", "users"
 end

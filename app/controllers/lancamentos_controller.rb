@@ -10,6 +10,19 @@ class LancamentosController < ApplicationController
   # GET /lancamentos/1
   # GET /lancamentos/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.pdf do
+          render pdf: "Lancamento No. #{@lancamento.id}",
+          page_size: 'A4',
+          template: "lancamentos/show.html.erb",
+          layout: "pdf.html",
+          orientation: "Landscape",
+          lowquality: true,
+          zoom: 1,
+          dpi: 75
+      end
+  end
   end
 
   # GET /lancamentos/new

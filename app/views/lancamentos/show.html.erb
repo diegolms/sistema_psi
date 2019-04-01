@@ -1,34 +1,114 @@
-<p id="notice"><%= notice %></p>
+<% if action_name.to_sym == :show %>
+       <div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                          <%= link_to 'Back', root_path, class: "btn btn-outline-secondary mx-2" %>
+                          <%= link_to 'DOWNLOAD PDF', lancamento_path(::Lancamento.find(params[:id]), format: :pdf), class: "btn btn-outline-success my-2 my-sm-0" %>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+<% end %>
 
-<p>
-  <strong>Descricao:</strong>
-  <%= @lancamento.descricao %>
-</p>
+<div class="invoice-box">
+       <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+          <tr class="top">
+            <td colspan="6">
+              <table>
+                <tr>
+                  <td class="title">
+                    Jesus do Porto V
+                  </td>
 
-<p>
-  <strong>Data vencimento:</strong>
-  <%= @lancamento.data_vencimento %>
-</p>
+                  <td>
+                    Lancamento #: <b><%= @lancamento.id %></b>
+                    <br>
+                    Data Pagamento: <b><%= @lancamento.data_pagamento.strftime('%d/%m/%Y') %></b>
+                    <br>
+                    Data Vencimento: <b><%= @lancamento.data_vencimento.strftime('%d/%m/%Y') %></b>
+                    <br>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-<p>
-  <strong>Data pagamento:</strong>
-  <%= @lancamento.data_pagamento %>
-</p>
+          <tr class="information">
+            <td colspan="4">
+              <table>
+                <tr>
+                  <td>
+                    <b>Condomínio Jesus do Porto V</b><br>
+                    Rua Bel. Manoel Pereira diniz, 727, João Pessoa - PB.<br>
+                    CEP: 58052-520<br>
+                    <i class="fa fa-envelope"></i> condominiojesusdoportov@gmail.com <br>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-<p>
-  <strong>Valor:</strong>
-  <%= @lancamento.valor %>
-</p>
+          <tr class="heading">
+            <td>Item</td>
+            <td>Pessoa</td>
+            <td>Categoria</td>
+            <td class="right">Preço</td>
+            <td class="right"></td>
+            <td>Total</td>
+          </tr>
 
-<p>
-  <strong>Observacao:</strong>
-  <%= @lancamento.observacao %>
-</p>
+          
+            <tr class="item">
+                <td>
+                    <%= @lancamento.descricao %><br>
+                    <small><%= @lancamento.observacao %></small>
+                </td>
+                						<td><%= @lancamento.pessoa.nome %></td>
+                      <td><%= @lancamento.categoria.nome %></td>
 
-<p>
-  <strong>Categoria:</strong>
-  <%= @lancamento.categoria %>
-</p>
+                <td class="right">
+                    <%= number_to_currency(@lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %>
+                </td>
 
-<%= link_to 'Edit', edit_lancamento_path(@lancamento) %> |
-<%= link_to 'Back', lancamentos_path %>
+                <td class="right">
+                    
+                </td>
+
+                <td>
+                    <%= number_to_currency(@lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %>
+                </td>
+            </tr>
+
+
+          <tr>
+            <td colspan="4"></td>
+          </tr>
+
+          <tr>
+            <td colspan="4"></td>
+            <td><b>Subtotal</b></td>
+            <td><%= number_to_currency(@lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".")  %></td>
+          </tr>
+
+          
+
+          <tr class="heading">
+            <td colspan="4"></td>
+            <td><b>TOTAL:</b></td>
+            <td>
+               <b><%= number_to_currency(@lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".")  %></b>
+            </td>
+          </tr>
+        </table>
+    </div>
