@@ -22,7 +22,7 @@ class LancamentosController < ApplicationController
           zoom: 1,
           dpi: 75
       end
-  end
+    end
   end
 
   # GET /lancamentos/new

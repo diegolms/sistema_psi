@@ -18,58 +18,95 @@
             </div>
         </div>
 
-        <div class="content mt-3">
-				
+        div class="content mt-3">
             <!--div class="animated fadeIn"-->
                 <div class="row">
-
+				
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-									<%= link_to new_relatorio_path, class: "btn btn-success btn-sm", style: "color: white" do %>
-										<i class="fa fa-plus"></i> Novo
-									<% end %>
+                                <strong class="card-title">Gerar Relatório</strong>
                             </div>
-							
                             <div class="card-body">
-                                <div class="table-responsive-sm">
-								  <table class="table">
-									<thead>
-									  <tr>
-										<th scope="col">#</th>
-										<th scope="col">Nome</th>
-										<th scope="col">Apartamento</th>
-										<th scope="col"></th>
-										<th scope="col"></th>
-									  </tr>
-									</thead>
-									<tbody>
-									  <% @relatorios.each do |relatorio| %>
-										  <tr>
-											<th scope="row"><%= pessoa.id %></th>
-											<td><%= pessoa.nome %></td>
-											<td><%= pessoa.numero%></td>
-											<td>
-											<%= link_to edit_pessoa_path(pessoa), class: "btn btn-primary btn-sm", style: "color: white" do %>
-												<i class="fa fa-edit"></i>&nbsp; Editar
-											<% end %>
-											<%= link_to pessoa, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
-												<i class="fa fa-times"></i>&nbsp; Remover
-											<% end %>
-											</td>
-											
-										  </tr>
-										<% end %>
-									</tbody>
-								  </table>
-								</div>
-								
-								<%= will_paginate @pessoas, previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+                                <!-- Credit Card -->
+                                <div id="pay-invoice">
+                                    <div class="card-body">
+										<%= form_with(model: lancamento, local: true) do |form| %>
+										
+										<div class="form-row">
+											  <div class="form-group col-md-3">
+											  <span id='tipoLancamento'></span>
+											</div>	
+										</div>									
+										
+										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+											<label class="btn btn-primary" id='label_receita'>
+												<%= form.radio_button :tipo, 1 %> Receita
+											</label>
+											<label class="btn btn-primary" id='label_despesa'>
+												<%= form.radio_button :tipo, 2 %> Despesa
+											</label>
+										</div>
+										
+										
+										<br><br>
+																					
+											  <div class="form-row">
+											  <div class="form-group col-md-3">
+												  <label for="inputPassword4">Data Pagamento</label>
+												  <%= form.text_field :data_pagamento, :autocomplete => :off, class: "form-control", required: true, :value=>"#{@lancamento.data_pagamento.strftime("%d/%m/%Y") unless @lancamento.new_record?}" %>
+												</div>
+												
+											    <div class="form-group col-md-3">
+												  <label for="inputEmail4">Data Vencimento</label>
+												  <%= form.text_field :data_vencimento, :autocomplete => :off, class: "form-control", required: true, :value=>"#{@lancamento.data_vencimento.strftime("%d/%m/%Y") unless @lancamento.new_record?}" %>
+												</div>
+												
+											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-9">
+												  <label for="inputCity">Descrição</label>
+												  <%= form.text_field :descricao, autofocus: true, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+												<div class="form-group col-md-3">
+												  <label for="inputState">Valor</label>
+												  <%= form.text_field :valor, autofocus: true, autocomplete: "nome", class: "form-control", required: true, :onfocusout => 'formata_decimal(this,2, event)' %>
+												</div>
+											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-6">
+												   <label>Categoria</label>
+												   <%= form.select :categoria_id, @categorias.each.map {|l| [l.nome, l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+                  
+												</div>
+												<div class="form-group col-md-6">
+												  <label for="inputState">Pessoa</label>
+												  <%= form.select :pessoa_id, @pessoas.each.map {|l| [l.nome, l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+												</div>
+											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-12">
+												  <label for="inputState">Observação</label>
+												  <%= form.text_area :observacao, autofocus: true, autocomplete: "nome", class: "form-control", required: true %>
+												</div>
+											  </div>
+											  
+											  
+											  <%= link_to 'Cancelar', lancamentos_path, class: "btn btn-danger btn-sm", style: "color: white" %>
+									    	  <%= form.submit @lancamento.new_record? ? 'Cadastrar' : 'Editar ' , class:"btn btn-success btn-sm m-b-30 m-t-30", style: "color: white" %>											
+                                              
+                                        <% end %>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+                        </div> <!-- .card -->
                     </div>
 
 
                 </div>
-            <!--/div>--<!-- .animated -->
+            <!--/div--><!-- .animated -->
         </div><!-- .content -->

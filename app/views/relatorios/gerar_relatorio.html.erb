@@ -1,0 +1,24 @@
+       <div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                          <%= link_to 'Back', relatorios_path, class: "btn btn-outline-secondary mx-2" %>
+                          <!--%= link_to 'DOWNLOAD PDF', lancamento_path(::Lancamento.find(params[:id]), format: :pdf), class: "btn btn-outline-success my-2 my-sm-0" %-->
+                          <%= link_to 'DOWNLOAD PDF', "", class: "btn btn-outline-success my-2 my-sm-0" %>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ <% if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO) %>
+       <%= render 'relatorio_lancamentos' %>
+<% end %>
