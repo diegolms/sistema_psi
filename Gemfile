@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.0'
+ruby '2.5.3'
 
 gem 'bootstrap', '~> 4.0.0'
 
@@ -59,7 +59,7 @@ group :test do
 end
 
 group :production do
-		#gem 'pg'
+		gem 'pg'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
