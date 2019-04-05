@@ -1,3 +1,4 @@
+<% if params[:action] != "show" %>       
        <div class="breadcrumbs">
             <div class="col-sm-4">
                 <div class="page-header float-left">
@@ -10,15 +11,14 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                          <%= link_to 'Back', relatorios_path, class: "btn btn-outline-secondary mx-2" %>
-                          <!--%= link_to 'DOWNLOAD PDF', lancamento_path(::Lancamento.find(params[:id]), format: :pdf), class: "btn btn-outline-success my-2 my-sm-0" %-->
-                          <%= link_to 'DOWNLOAD PDF', "", class: "btn btn-outline-success my-2 my-sm-0" %>
+                          <%= link_to 'Back', "/relatorios/new", class: "btn btn-outline-secondary mx-2" %>
+                          <%= link_to 'DOWNLOAD PDF', relatorio_path("download_pdf", format: :pdf) , class: "btn btn-outline-success my-2 my-sm-0" %>
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
-
+<% end %>
  <% if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO) %>
        <%= render 'relatorio_lancamentos' %>
 <% end %>

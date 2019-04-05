@@ -12,14 +12,17 @@
 
 ActiveRecord::Schema.define(version: 2019_04_02_150218) do
 
-  create_table "categoria", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "categoria", force: :cascade do |t|
     t.string "nome"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "ativo", default: true
   end
 
-  create_table "lancamentos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "lancamentos", force: :cascade do |t|
     t.string "descricao"
     t.date "data_vencimento"
     t.date "data_pagamento"
@@ -35,7 +38,7 @@ ActiveRecord::Schema.define(version: 2019_04_02_150218) do
     t.index ["pessoa_id"], name: "index_lancamentos_on_pessoa_id"
   end
 
-  create_table "pessoas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "pessoas", force: :cascade do |t|
     t.string "nome"
     t.string "numero"
     t.string "bloco"
@@ -44,7 +47,7 @@ ActiveRecord::Schema.define(version: 2019_04_02_150218) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "relatorios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "relatorios", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "tipo_relatorio"
     t.date "data_inicio"
@@ -54,14 +57,14 @@ ActiveRecord::Schema.define(version: 2019_04_02_150218) do
     t.index ["user_id"], name: "index_relatorios_on_user_id"
   end
 
-  create_table "tipo_relatorios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tipo_relatorios", force: :cascade do |t|
     t.string "descricao"
     t.integer "codigo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

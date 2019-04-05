@@ -4,6 +4,25 @@ class RelatoriosController < ApplicationController
     @relatorio = Relatorio.new
   end  
 
+  def download_pdf
+
+    @tipo_relatorio = 1
+    @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse("01/04/2019"), Date.parse("30/04/2019"))
+
+    respond_to do |format|   
+      format.pdf do
+        render pdf: "Lancamento No. ",
+        page_size: 'A4',
+        template: "relatorios/gerar_relatorio.html.erb",
+        layout: "pdf.html",
+        orientation: "Landscape",
+        lowquality: true,
+        zoom: 1,
+        dpi: 75
+      end
+    end  
+  end
+
   def gerar_relatorio
 
      @data_inicio = params[:relatorio][:data_inicio]
@@ -14,21 +33,11 @@ class RelatoriosController < ApplicationController
      
      if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO)
         template = "relatorios/lancamentos.html.erb"
-        @lancamentos = Lancamento.where("data_pagamento >= '#{@data_inicio}' and data_pagamento <= '#{@data_fim}'")
+        @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
      end
 
     respond_to do |format|
       format.html
-      format.pdf do
-          render pdf: "Lancamento No. ",
-          page_size: 'A4',
-          template: template,
-          layout: "pdf.html",
-          orientation: "Landscape",
-          lowquality: true,
-          zoom: 1,
-          dpi: 75
-      end
     end
   end
 end
