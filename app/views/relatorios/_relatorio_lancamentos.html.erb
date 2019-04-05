@@ -41,6 +41,7 @@
             <td>Categoria</td>
             <td class="right"></td>
             <td class="right"></td>
+            <td class="right"></td>
             <td>Total</td>
           </tr>
 
@@ -63,6 +64,9 @@
                                   
                               </td>
 
+                              <td class="right">
+                              </td>
+
                               <td>
                                   <%= number_to_currency(lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %>
                               </td>
@@ -75,7 +79,7 @@
           </tr>        
 
           <tr class="heading">
-            <td colspan="4"></td>
+            <td colspan="5"></td>
             <td><b>TOTAL:</b></td>
             <td>
                <b><%= number_to_currency(valor, :unit => "R$ ", :separator => ",", :delimiter => ".")  %></b>

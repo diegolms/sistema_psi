@@ -14,6 +14,7 @@ class RelatoriosController < ApplicationController
         render pdf: "Lancamento No. ",
         page_size: 'A4',
         template: "relatorios/gerar_relatorio.html.erb",
+        encoding: 'utf8',
         layout: "pdf.html",
         orientation: "Landscape",
         lowquality: true,
@@ -38,6 +39,17 @@ class RelatoriosController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.pdf do
+        render pdf: "Lancamento No. ",
+        page_size: 'A4',
+        template: "relatorios/gerar_relatorio.html.erb",
+        encoding: 'utf8',
+        layout: "pdf.html",
+        orientation: "Landscape",
+        lowquality: true,
+        zoom: 1,
+        dpi: 75
+      end
     end
   end
 end
