@@ -47,7 +47,6 @@
 								  <table class="table">
 									<thead>
 									  <tr>
-										<th scope="col">#</th>
 										<th scope="col">Nome</th>
 										<th scope="col">Apartamento</th>
 										<th scope="col"></th>
@@ -57,13 +56,14 @@
 									<tbody>
 									  <% @pessoas.each do |pessoa| %>
 										  <tr>
-											<th scope="row"><%= pessoa.id %></th>
 											<td><%= pessoa.nome %></td>
 											<td><%= pessoa.numero%></td>
 											<td>
 											<%= link_to edit_pessoa_path(pessoa), class: "btn btn-primary btn-sm", style: "color: white" do %>
 												<i class="fa fa-edit"></i>&nbsp; Editar
 											<% end %>
+											</td>
+											<td>
 											<%= link_to pessoa, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
 												<i class="fa fa-times"></i>&nbsp; Remover
 											<% end %>

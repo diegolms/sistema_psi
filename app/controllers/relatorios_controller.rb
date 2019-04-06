@@ -6,8 +6,18 @@ class RelatoriosController < ApplicationController
 
   def download_pdf
 
-    @tipo_relatorio = 1
-    @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse("01/04/2019"), Date.parse("30/04/2019"))
+   p "session #{session[:conditions_relatorio]}"  
+   p "params - #{params}" 
+
+   @data_inicio = session[:relatorio_data_inicio] 
+   @data_fim = session[:relatorio_data_fim] 
+   @tipo_relatorio = session[:relatorio_tipo_relatorio]    
+   template = ""
+   
+   if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO)
+      template = "relatorios/lancamentos.html.erb"
+      @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
+   end
 
     respond_to do |format|   
       format.pdf do
@@ -26,30 +36,46 @@ class RelatoriosController < ApplicationController
 
   def gerar_relatorio
 
-     @data_inicio = params[:relatorio][:data_inicio]
-     @data_fim = params[:relatorio][:data_fim]
-     @tipo_relatorio = params[:relatorio][:tipo].to_i
+      p "params - #{params}"  
+      
+     if params[:authenticity_token].nil?
+      redirect_to '/relatorios/new'
+     else
+      @data_inicio = params[:relatorio][:data_inicio]
+      session[:relatorio_data_inicio] = @data_inicio
+ 
+      @data_fim = params[:relatorio][:data_fim]
+      session[:relatorio_data_fim] = @data_fim
+ 
+      @tipo_relatorio = params[:relatorio][:tipo].to_i
+      session[:relatorio_tipo_relatorio] = @tipo_relatorio
+ 
+      template = ""
+      
+      if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO)
+         template = "relatorios/lancamentos.html.erb"
+         @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
+      end
 
-     template = ""
-     
-     if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO)
-        template = "relatorios/lancamentos.html.erb"
-        @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
+      redirect_to '/relatorios/download_pdf'
+ 
+     respond_to do |format|
+       format.html
+       format.pdf do
+         render pdf: "Lancamento No. ",
+         page_size: 'A4',
+         template: "relatorios/gerar_relatorio.html.erb",
+         encoding: 'utf8',
+         layout: "pdf.html",
+         orientation: "Landscape",
+         lowquality: true,
+         zoom: 1,
+         dpi: 75
+       end
      end
 
-    respond_to do |format|
-      format.html
-      format.pdf do
-        render pdf: "Lancamento No. ",
-        page_size: 'A4',
-        template: "relatorios/gerar_relatorio.html.erb",
-        encoding: 'utf8',
-        layout: "pdf.html",
-        orientation: "Landscape",
-        lowquality: true,
-        zoom: 1,
-        dpi: 75
-      end
-    end
+     end  
+
+     
   end
 end

@@ -49,7 +49,6 @@
 								  <table class="table">
 									<thead>
 									  <tr>
-										<th scope="col">#</th>
 										<th scope="col">Descrição</th>
 										<th scope="col">Pagamento</th>
 										<th scope="col">Vencimento</th>										
@@ -64,7 +63,6 @@
 									<tbody>
 									  <% @lancamentos.each do |lancamento| %>
 										  <tr>
-											<th scope="row"><%= lancamento.id %></th>
 											<td><%= lancamento.descricao %></td>
 											<td><%= lancamento.data_pagamento.strftime("%d/%m/%Y") %></td>
 											<td><%= lancamento.data_vencimento.strftime("%d/%m/%Y") %></td>
