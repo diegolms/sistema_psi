@@ -6,9 +6,6 @@ class RelatoriosController < ApplicationController
 
   def download_pdf
 
-   p "session #{session[:conditions_relatorio]}"  
-   p "params - #{params}" 
-
    @data_inicio = session[:relatorio_data_inicio] 
    @data_fim = session[:relatorio_data_fim] 
    @tipo_relatorio = session[:relatorio_tipo_relatorio]    
@@ -36,11 +33,12 @@ class RelatoriosController < ApplicationController
 
   def gerar_relatorio
 
-      p "params - #{params}"  
+      
       
      if params[:authenticity_token].nil?
       redirect_to '/relatorios/new'
      else
+
       @data_inicio = params[:relatorio][:data_inicio]
       session[:relatorio_data_inicio] = @data_inicio
  
@@ -56,8 +54,6 @@ class RelatoriosController < ApplicationController
          template = "relatorios/lancamentos.html.erb"
          @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
       end
-
-      redirect_to '/relatorios/download_pdf'
  
      respond_to do |format|
        format.html
