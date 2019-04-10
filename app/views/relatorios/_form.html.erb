@@ -57,7 +57,7 @@ $( document ).ready(function() {
 											  <div class="form-row">
 													<div class="form-group col-md-6">
 														<label>Tipo Relatório</label>
-														<%= form.select :tipo, TipoRelatorio.order("descricao").each.map {|l| [l.descricao, l.codigo]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+														<%= form.select :tipo, TipoRelatorio.order("descricao").each.map {|l| [l.descricao, l.codigo]}, {:include_blank => 'Selecione'}, {:class => 'form-control', required: true} %>
 										
 													</div>
 											  </div>
