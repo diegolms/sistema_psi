@@ -24,12 +24,13 @@
                 <div class="login-form">
                     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                         <div class="form-group">
-                            <label>Email</label>
-							<%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true %>
+                            <label>Login ou Email</label>
+							<%= f.text_field :login, autofocus: true, class: "form-control", required: true %>
+							
                         </div>
                             <div class="form-group">
                                 <label>Senha</label>
-								<%= f.password_field :password, autocomplete: "current-password", class: "form-control", required: true %>
+								<%= f.password_field :password, class: "form-control", required: true %>
                         </div>
                                 <div class="checkbox">
                                     <label>
