@@ -4,6 +4,7 @@ class PagesController < ApplicationController
   def index
     @lancamentos_receita = Lancamento.where("ativo = #{Constantes::ATIVO} and tipo = #{Lancamento::TIPO_LANCAMENTO_RECEITA}").sum(:valor) 
     @lancamentos_despesa = Lancamento.where("ativo = #{Constantes::ATIVO} and tipo = #{Lancamento::TIPO_LANCAMENTO_DESPESA}").sum(:valor)
+	@caixa = Caixa.last.valor
     @pessoas = Pessoa.where("ativo = #{Constantes::ATIVO}").size	
   end
  

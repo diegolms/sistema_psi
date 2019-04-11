@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_04_06_141040) do
-=======
-ActiveRecord::Schema.define(version: 2019_04_08_140235) do
->>>>>>> login_usuario_permissoes
+ActiveRecord::Schema.define(version: 2019_04_11_162623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "caixas", force: :cascade do |t|
+    t.integer "tipo_lancamento"
+    t.decimal "valor", precision: 14, scale: 2, default: "0.0"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_caixas_on_user_id"
   end
 
   create_table "categoria", force: :cascade do |t|
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 2019_04_08_140235) do
     t.integer "tipo"
     t.boolean "ativo", default: true
     t.bigint "pessoa_id"
+    t.boolean "movimenta_caixa", default: false
+    t.boolean "condominio", default: false
     t.index ["categoria_id"], name: "index_lancamentos_on_categoria_id"
     t.index ["pessoa_id"], name: "index_lancamentos_on_pessoa_id"
   end
@@ -91,6 +93,7 @@ ActiveRecord::Schema.define(version: 2019_04_08_140235) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "caixas", "users"
   add_foreign_key "lancamentos", "categoria", column: "categoria_id"
   add_foreign_key "lancamentos", "pessoas"
   add_foreign_key "relatorios", "users"

@@ -44,6 +44,20 @@ class LancamentosController < ApplicationController
     @lancamento.categoria_id = params[:lancamento][:categoria_id]
 	@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
 	@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
+	
+	if(@lancamento.movimenta_caixa)
+		c = Caixa.new
+		c.tipo_lancamento = @lancamento.tipo
+		cAtual = Caixa.last.valor
+		if(c.tipo_lancamento == Lancamento::TIPO_LANCAMENTO_RECEITA)
+			c.valor = cAtual + @lancamento.valor
+		else
+			c.valor = cAtual - @lancamento.valor
+		end
+		
+		c.save!
+	end
+	
 	@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
 
     respond_to do |format|

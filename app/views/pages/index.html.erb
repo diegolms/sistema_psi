@@ -54,7 +54,7 @@
                             <div class="stat-icon dib"><i class="fa fa-money text-warning border-warning"></i></div>
                             <div class="stat-content dib">
                                 <div class="stat-text">Caixa</div>
-                                <div class="stat-digit">770</div>
+                                <div class="stat-digit"><%= number_to_currency(@caixa, :unit => "", :separator => ",", :delimiter => ".") %></div>
                             </div>
                         </div>
                     </div>

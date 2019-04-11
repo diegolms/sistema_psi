@@ -20,6 +20,8 @@ namespace :app do
 		p "Seta System Default"
         Rake::Task["app:systemSetDefaultConfig"].invoke
 		
+		Rake::Task["db:seed"].invoke
+		
       end
     end
   end
@@ -41,25 +43,24 @@ namespace :app do
     p "Executa os migrations"
     Rake::Task["db:migrate"].invoke
 
-    p "Cadastra usuario administrador"
-    Rake::Task["app:criar_usuario_administrador"].invoke
-
 	p "Seta System Default"
     Rake::Task["app:systemSetDefaultConfig"].invoke
+	
+	Rake::Task["db:seed"].invoke
 
   end
 
   # Criar usuário
-  task :criar_usuario_administrador => :environment do
+  #task :criar_usuario_administrador => :environment do
 
-	u = User.new({
-	  username: 'admin',
-      email: 'admin@jesusdoportov.com',
-      password: 'admin',
-      password_confirmation: 'admin'
-    })
-    u.save
-  end
+	#u = User.new({
+	#  username: 'admin',
+   #   email: 'admin@jesusdoportov.com',
+    #  password: 'admin',
+   #   password_confirmation: 'admin'
+   # })
+  #  u.save
+ # end
   
 end
 
