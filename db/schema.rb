@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_04_06_141040) do
+=======
+ActiveRecord::Schema.define(version: 2019_04_08_140235) do
+>>>>>>> login_usuario_permissoes
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +66,10 @@ ActiveRecord::Schema.define(version: 2019_04_06_141040) do
     t.index ["user_id"], name: "index_relatorios_on_user_id"
   end
 
+  create_table "system_configs", force: :cascade do |t|
+    t.boolean "installed", default: false
+  end
+
   create_table "tipo_relatorios", force: :cascade do |t|
     t.string "descricao"
     t.integer "codigo"
@@ -77,8 +85,10 @@ ActiveRecord::Schema.define(version: 2019_04_06_141040) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "lancamentos", "categoria", column: "categoria_id"

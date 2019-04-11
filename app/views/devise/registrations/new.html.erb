@@ -26,6 +26,11 @@
                             <label>Email</label>
 							<%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true %>
                         </div>
+						<div class="form-group">
+                            <label>Usuário</label>
+							<%= f.text_field :username , autofocus: true, autocomplete: "email", class: "form-control", required: true %>
+                        </div>
+						
                             <div class="form-group">
                                 <label>Senha</label>
 								<%= f.password_field :password, autocomplete: "new-password", class: "form-control", required: true %>
