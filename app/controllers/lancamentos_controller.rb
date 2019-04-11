@@ -29,9 +29,6 @@ class LancamentosController < ApplicationController
   def new
     @lancamento = Lancamento.new
 	@lancamento.tipo = Lancamento::TIPO_LANCAMENTO_RECEITA
-	
-	@categorias = Categorium.where(:ativo => Constantes::ATIVO)
-	@pessoas = Pessoa.where(:ativo => Constantes::ATIVO)
   end
 
   # GET /lancamentos/1/edit
@@ -46,6 +43,8 @@ class LancamentosController < ApplicationController
     @lancamento.pessoa_id = params[:lancamento][:pessoa_id]
     @lancamento.categoria_id = params[:lancamento][:categoria_id]
 	@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
+	@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
+	@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
 
     respond_to do |format|
       if @lancamento.save!
@@ -62,7 +61,13 @@ class LancamentosController < ApplicationController
   # PATCH/PUT /lancamentos/1.json
   def update
     respond_to do |format|
+	    @lancamento.pessoa_id = params[:lancamento][:pessoa_id]
+		@lancamento.categoria_id = params[:lancamento][:categoria_id]
+		@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
+		@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
+		@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
       if @lancamento.update(lancamento_params)
+	    
         format.html { redirect_to lancamentos_url, notice: 'Lancamento editado com sucesso.' }
         format.json { render :show, status: :ok, location: @lancamento }
       else

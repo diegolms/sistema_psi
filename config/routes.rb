@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   resources :pessoas
   devise_for :users
   
+	resources :lancamentos do
+		get :download_resume
+	end
+  
   resources :relatorios do
     collection do
       post :gerar_relatorio
