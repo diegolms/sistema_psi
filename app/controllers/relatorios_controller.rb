@@ -54,8 +54,8 @@ class RelatoriosController < ApplicationController
  
 	  relatorio_pdf()	
 	  
-	  	pdf_filename = File.join(Rails.root, "tmp/relatorio.pdf")
-		send_file(pdf_filename, :filename => "tmp/relatorio.pdf", :disposition => 'inline', :type => "application/pdf")
+	  pdf_filename = File.join(Rails.root, "tmp/relatorio.pdf")
+	  send_file(pdf_filename, :filename => "tmp/relatorio.pdf", :disposition => 'inline', :type => "application/pdf", :target => "_blank")
 
      end  
 	 	 
