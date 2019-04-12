@@ -44,7 +44,7 @@ namespace :app do
     # Executa os migrations
     Rake::Task["db:migrate"].invoke
 
-    # Cadastra condôminos
+    # Cadastra condôminos 
     Rake::Task["app:criar_condominos"].invoke
 
     # Cadastra usuario administrador
