@@ -36,10 +36,10 @@ namespace :app do
 
   task :reinstall => :environment do
 
-    Rake::Task["db:drop"].invoke
+    #Rake::Task["db:drop"].invoke
 
     # Cria o banco de dados
-    Rake::Task["db:create"].invoke
+    #Rake::Task["db:create"].invoke
 
     # Executa os migrations
     Rake::Task["db:migrate"].invoke
