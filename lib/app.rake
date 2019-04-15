@@ -32,7 +32,7 @@ namespace :app do
     config = SystemConfig.new
     config.installed = 1
     config.save
-  end
+  end 
 
   task :reinstall => :environment do
 
