@@ -56,6 +56,10 @@ class LancamentosController < ApplicationController
 		end
 		
 		c.save!
+		@lancamento.caixa_id = c.id
+	else
+		@lancamento.movimenta_caixa = false		
+		
 	end
 	
 	@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
@@ -79,6 +83,32 @@ class LancamentosController < ApplicationController
 		@lancamento.categoria_id = params[:lancamento][:categoria_id]
 		@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
 		@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
+		p "params #{params[:lancamento][:tipo]}"
+		if(@lancamento.movimenta_caixa)
+			if(@lancamento.caixa_id.nil?)
+				c = Caixa.new
+			else
+				c = Caixa.find(@lancamento.caixa_id)
+			end
+			
+			c.tipo_lancamento =  params[:lancamento][:tipo]
+			cAtual = Caixa.last.valor
+			if(c.tipo_lancamento == Lancamento::TIPO_LANCAMENTO_RECEITA)
+				c.valor = cAtual + @lancamento.valor
+			else
+				c.valor = cAtual - @lancamento.valor
+			end
+			
+			c.save!
+			@lancamento.caixa_id = c.id
+		else
+			if(!@lancamento.caixa_id.nil?)
+				Caixa.find(@lancamento.caixa_id).destroy
+			end
+			
+			@lancamento.caixa_id = nil
+		end
+		
 		@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
       if @lancamento.update(lancamento_params)
 	    

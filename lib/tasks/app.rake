@@ -34,7 +34,28 @@ namespace :app do
 
   task :reinstall => :environment do
 	
-	Rake::Task["db:seed"].invoke
+	 Rake::Task["db:drop"].invoke
+
+    # Cria o banco de dados
+    Rake::Task["db:create"].invoke
+
+    # Executa os migrations
+    Rake::Task["db:migrate"].invoke
+
+    Rake::Task["db:seed"].invoke
+
+    Rake::Task["app:systemSetDefaultConfig"].invoke
+
+  end
+  
+  task :popular_base => :environment do
+	
+    # Executa os migrations
+    Rake::Task["db:migrate"].invoke
+
+    Rake::Task["db:seed"].invoke
+
+    Rake::Task["app:systemSetDefaultConfig"].invoke
 
   end
 

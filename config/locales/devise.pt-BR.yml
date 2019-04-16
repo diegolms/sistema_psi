@@ -59,6 +59,10 @@ pt-BR:
       unlocked: "Sua conta foi desbloqueada com sucesso. Por favor, faça login para continuar."
   errors:
     messages:
+      record_invalid: 'A validação falhou: %{errors}'
+      restrict_dependent_destroy:
+      has_one: Não é possível excluir o registro pois existe um %{record} dependente
+      has_many: Não é possível excluir o registro pois existem %{record} dependentes
       already_confirmed: "já foi confirmado, por favor faça login"
       confirmation_period_expired: "precisava ser confirmada em %{period}, por favor solicite um novo link"
       expired: "expirou, por favor solicite uma nova"
