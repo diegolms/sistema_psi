@@ -33,18 +33,6 @@ namespace :app do
   end
 
   task :reinstall => :environment do
-
-	p "apaga o banco de dados"
-    Rake::Task["db:drop"].invoke
-
-    p "Cria o banco de dados"
-    Rake::Task["db:create"].invoke
-		
-    p "Executa os migrations"
-    Rake::Task["db:migrate"].invoke
-
-	p "Seta System Default"
-    Rake::Task["app:systemSetDefaultConfig"].invoke
 	
 	Rake::Task["db:seed"].invoke
 
