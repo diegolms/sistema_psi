@@ -17,8 +17,12 @@
     a.save!
 	
 	#Pessoa
-	p = Pessoa.new({nome: 'Diego', numero: '102'})
+	p = Pessoa.new({nome: 'Condomínio', numero: '-'})
     p.save!
+	
+	p = Pessoa.new({nome: 'Diego', numero: '102'})
+    p.save! 
+	
 	
 	c = Caixa.new({valor: 0, user_id: u.id})
 	c.save!
