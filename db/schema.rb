@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_162623) do
+ActiveRecord::Schema.define(version: 2019_04_16_153613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_162623) do
     t.bigint "pessoa_id"
     t.boolean "movimenta_caixa", default: false
     t.boolean "condominio", default: false
+    t.integer "caixa_id"
     t.index ["categoria_id"], name: "index_lancamentos_on_categoria_id"
     t.index ["pessoa_id"], name: "index_lancamentos_on_pessoa_id"
   end

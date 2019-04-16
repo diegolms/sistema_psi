@@ -1,0 +1,1 @@
+heroku restart && heroku pg:reset DATABASE && heroku run rake app:popular_base
