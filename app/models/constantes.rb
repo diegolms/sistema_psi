@@ -3,4 +3,5 @@ class Constantes
 
     ATIVO = true
     INATIVO = false
+	
 end	 

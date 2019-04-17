@@ -1,0 +1,85 @@
+<div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Vencimentos</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+							<li>Financeiro</li>
+                            <li class="active">Vencimentos</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+		
+				<% flash.each do |key, value| %>
+					  <div class="alert  alert-success alert-dismissible fade show" role="alert">
+						<span class="badge badge-pill badge-success">Successo</span> <%= value %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+				<% end %>
+
+				
+            <!--div class="animated fadeIn"-->
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+							
+								<% if current_user.isAdmin? %>
+							
+																<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
+																	<i class="fa fa-plus"></i> Cadastrar
+																<% end %>
+								<% end %>								
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive-sm">
+																	<table class="table">
+																	<thead>
+																		<tr>
+																		<% if current_user.isAdmin? %>
+																			<th scope="col">Usuário</th>
+																		<% end %>
+																		<th scope="col">Mês/Ano</th>
+																		<th scope="col">Vencimento</th>
+																		<th scope="col">Valor</th>
+																		<th scope="col">Status</th>
+																		</tr>
+																	</thead>
+																		<tbody>
+																			<% @vencimentos.each do |vencimento| %>
+																				<tr>
+																					<% if current_user.isAdmin? %>
+																						<td><%= vencimento.user.nome %></td>
+																					<% end %>
+																					<td><%= vencimento.data %></td>
+																					<td><%= vencimento.data_vencimento %></td>
+																					<td><%= vencimento.valor %></td>
+																					<td><%= vencimento.status %></td>																			
+																				</tr>
+																			<% end %>
+																		</tbody>
+																	</table>
+								</div>
+								
+								<%= will_paginate @vencimentos , previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            <!--/div--><!-- .animated -->
+        </div><!-- .content -->

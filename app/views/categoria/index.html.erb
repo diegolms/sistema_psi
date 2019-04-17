@@ -37,9 +37,12 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-																<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
-																	<i class="fa fa-plus"></i> Cadastrar
-																<% end %>
+							<% if current_user.isAdmin? %>
+								<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
+																		<i class="fa fa-plus"></i> Cadastrar
+								<% end %>
+							<% end %>
+																
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive-sm">
@@ -49,22 +52,33 @@
 																		<th scope="col">Nome</th>
 																		<th scope="col"></th>
 																		<th scope="col"></th>
+																		<th scope="col"></th>
 																		</tr>
 																	</thead>
 																		<tbody>
 																			<% @categoria.each do |categorium| %>
 																				<tr>
 																				<td><%= categorium.nome %></td>
+																				<% if current_user.isAdmin? %>
+																					<td>
+																					<%= link_to edit_categorium_path(categorium), class: "btn btn-primary btn-sm", style: "color: white" do %>
+																						<i class="fa fa-edit"></i>&nbsp; Editar
+																					<% end %>
+																					</td>
+																					<td>
+																					<%= link_to categorium, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
+																						<i class="fa fa-times"></i>&nbsp; Remover
+																					<% end %>
+																					<%= link_to categorium, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
+																						<i class="fa fa-times"></i>&nbsp; Remover
+																					<% end %>
+																					</td>
+																				<% else %>
 																				<td>
-																				<%= link_to edit_categorium_path(categorium), class: "btn btn-primary btn-sm", style: "color: white" do %>
-																					<i class="fa fa-edit"></i>&nbsp; Editar
-																				<% end %>
 																				</td>
 																				<td>
-																				<%= link_to categorium, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
-																					<i class="fa fa-times"></i>&nbsp; Remover
-																				<% end %>
 																				</td>
+																				<% end %>																				
 																				</tr>
 																			<% end %>
 																		</tbody>

@@ -8,6 +8,10 @@ class User < ApplicationRecord
   
   validates :username, presence: :true, uniqueness: { case_sensitive: false }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
+  
+  belongs_to :perfil, optional: true, class_name: "Perfil", foreign_key: "perfil_id"
+  belongs_to :pessoa, optional: true, class_name: "Pessoa", foreign_key: "pessoa_id"
+  has_many :vencimentos
 
   def login
     @login || self.username || self.email
@@ -25,6 +29,10 @@ class User < ApplicationRecord
 		  where(username: conditions[:username]).first
 		end
 	  end
+	end
+	
+	def isAdmin?
+		return self.perfil.codigo == Perfil::ADMIN
 	end
 	
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_153613) do
+ActiveRecord::Schema.define(version: 2019_04_17_163914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,26 @@ ActiveRecord::Schema.define(version: 2019_04_16_153613) do
     t.integer "caixa_id"
     t.index ["categoria_id"], name: "index_lancamentos_on_categoria_id"
     t.index ["pessoa_id"], name: "index_lancamentos_on_pessoa_id"
+  end
+
+  create_table "perfil_regra_acessos", force: :cascade do |t|
+    t.string "controller"
+    t.string "action"
+    t.bigint "perfil_id"
+    t.string "description"
+    t.boolean "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["perfil_id"], name: "index_perfil_regra_acessos_on_perfil_id"
+  end
+
+  create_table "perfils", force: :cascade do |t|
+    t.string "nome"
+    t.string "descricao"
+    t.integer "codigo"
+    t.integer "status", default: 1
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pessoas", force: :cascade do |t|
@@ -89,13 +109,28 @@ ActiveRecord::Schema.define(version: 2019_04_16_153613) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "username"
+    t.integer "perfil_id"
+    t.integer "pessoa_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "vencimentos", force: :cascade do |t|
+    t.bigint "user_id"
+    t.date "data"
+    t.date "data_vencimento"
+    t.integer "status"
+    t.decimal "valor", precision: 14, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_vencimentos_on_user_id"
+  end
+
   add_foreign_key "caixas", "users"
   add_foreign_key "lancamentos", "categoria", column: "categoria_id"
   add_foreign_key "lancamentos", "pessoas"
+  add_foreign_key "perfil_regra_acessos", "perfils"
   add_foreign_key "relatorios", "users"
+  add_foreign_key "vencimentos", "users"
 end

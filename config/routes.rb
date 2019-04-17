@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :vencimentos
   resources :caixas
   resources :lancamentos
   resources :categoria

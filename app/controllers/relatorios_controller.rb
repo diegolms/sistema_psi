@@ -52,7 +52,7 @@ class RelatoriosController < ApplicationController
          @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
       end
  
-	  relatorio_pdf()	
+	  relatorio_pdf(@lancamentos)	
 	  
 	  pdf_filename = File.join(Rails.root, "tmp/relatorio.pdf")
 	  send_file(pdf_filename, :filename => "tmp/relatorio.pdf", :disposition => 'inline', :type => "application/pdf", :target => "_blank")
@@ -61,12 +61,9 @@ class RelatoriosController < ApplicationController
 	 	 
   end
   
-	def relatorio_pdf()
+	def relatorio_pdf(@lancamentos)
   
-		p "entrou relatorio pdf"
-  
-  
-		#Prawn::Document.generate("relatorio.pdf") do |pdf|
+
 		Prawn::Document.generate(File.join(Rails.root, "tmp/relatorio.pdf")) do |pdf|
 
 		  initial_y = pdf.cursor
