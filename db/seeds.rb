@@ -5,28 +5,26 @@
 	#categoria
 	a = Categorium.new({nome: 'Manutenção/Reparo'})
     a.save!
+	p "Criando categoria #{a.nome}"
 	
 	a = Categorium.new({nome: 'Mensalidade'})
     a.save!
+	p "Criando categoria #{a.nome}"
 	
 	#Pessoa
 	p = Pessoa.new({nome: 'Condomínio', numero: '-'})
     p.save!
+	p "Criando pessoa #{p.nome}"
 	
-	p = Pessoa.new({nome: 'Diego', numero: '102'})
-    p.save! 
+	p1 = Pessoa.new({nome: 'Diego', numero: '102'})
+    p1.save! 
+	p "Criando pessoa #{p1.nome}"
+	
+	p2 = Pessoa.new({nome: 'Silvia', numero: '304'})
+    p2.save!
+	p "Criando pessoa #{p2.nome}"
 	
 	
-	u = User.new({
-	  username: 'diegolms',
-      email: 'lmsilva.diego@gmail.com',
-      password: 'diegolms123',
-      password_confirmation: 'diegolms123',
-	  perfil_id: 2,
-	  pessoa_id: p.id
-	  })
-    u.save
-		
 	#Criando perfil
 	profiles = ['Administrador', 'Usuário']
 
@@ -39,6 +37,7 @@
       profile.status = 1
 	  profile.descricao = name
       profile.save
+	  p "Criando perfil #{profile.nome}"
     end
 	
 	u = User.new({
@@ -49,18 +48,23 @@
 	  perfil_id: 1
     })
     u.save
+	p "Criando usuario #{u.username}"
 	
 	c = Caixa.new({valor: 0, user_id: u.id})
 	c.save!
 	
-	  u = User.new({
+	
+		
+	u = User.new({
 	  username: 'diegolms',
       email: 'lmsilva.diego@gmail.com',
       password: 'diegolms123',
       password_confirmation: 'diegolms123',
-	  perfil_id: 2
-    })
+	  perfil_id: 2,
+	  pessoa_id: p1.id
+	  })
     u.save
+	p "Criando usuario #{u.username} - pessoa #{u.pessoa.nome}"
 	
 	 v = Vencimento.new({
 	  user_id: u.id,
@@ -71,6 +75,8 @@
     })
     v.save
 	
+	p "Criando vencimento #{v.user.pessoa.nome}"
+	
 	v = Vencimento.new({
 	  user_id: u.id,
       data: Time.now.beginning_of_month,
@@ -80,15 +86,20 @@
     })
     v.save
 	
+	p "Criando vencimento #{v.user.pessoa.nome}"
+	
 	
 	u = User.new({
 	  username: 'silvia',
       email: 'silvia@gmail.com',
       password: 'silvia123',
       password_confirmation: 'silvia123',
-	  perfil_id: 2
+	  perfil_id: 2,
+	  pessoa_id: p2.id
     })
     u.save
+	
+	p "Criando usuario #{u.username} - pessoa #{u.pessoa.nome}"
 	
 	
 	v = Vencimento.new({
@@ -100,6 +111,8 @@
     })
     v.save
 	
+	p "Criando vencimento #{v.user.pessoa.nome}"
+	
 	v = Vencimento.new({
 	  user_id: u.id,
       data: Time.now.beginning_of_month,
@@ -108,5 +121,7 @@
 	  valor: 150
     })
     v.save
+	
+	p "Criando vencimento #{v.user.pessoa.nome}"
 	
 	

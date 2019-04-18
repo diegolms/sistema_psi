@@ -5,7 +5,7 @@ class VencimentosController < ApplicationController
   # GET /vencimentos.json
   def index
     conditions = 
-	@vencimentos = Vencimento.where(current_user.isAdmin? ? "" : "user_id = #{current_user.id}").order('vencimentos.id desc').paginate(:page => params[:page], :per_page => 10)
+	@vencimentos = Vencimento.where(current_user.isAdmin? ? "" : "user_id = #{current_user.id}").order('vencimentos.data desc').paginate(:page => params[:page], :per_page => 10)
   end
 
   # GET /vencimentos/1

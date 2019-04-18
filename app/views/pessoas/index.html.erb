@@ -36,12 +36,15 @@
 
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
+						    
+                            
+							<% if current_user.isAdmin? %>
+								<div class="card-header">
 									<%= link_to new_pessoa_path, class: "btn btn-success btn-sm", style: "color: white" do %>
 										<i class="fa fa-plus"></i> Cadastrar
 									<% end %>
-                            </div>
-							
+								</div>
+							<% end %>	
                             <div class="card-body">
                                 <div class="table-responsive-sm">
 								  <table class="table">
@@ -58,16 +61,21 @@
 										  <tr>
 											<td><%= pessoa.nome %></td>
 											<td><%= pessoa.numero%></td>
+											<% if current_user.isAdmin? %>
 											<td>
-											<%= link_to edit_pessoa_path(pessoa), class: "btn btn-primary btn-sm", style: "color: white" do %>
-												<i class="fa fa-edit"></i>&nbsp; Editar
-											<% end %>
+												<%= link_to edit_pessoa_path(pessoa), class: "btn btn-primary btn-sm", style: "color: white" do %>
+													<i class="fa fa-edit"></i>&nbsp; Editar
+												<% end %>
+												</td>
+												<td>
+												<%= link_to pessoa, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
+													<i class="fa fa-times"></i>&nbsp; Remover
+												<% end %>
 											</td>
-											<td>
-											<%= link_to pessoa, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
-												<i class="fa fa-times"></i>&nbsp; Remover
+											<% else %>
+											<td></td><td></td>
 											<% end %>
-											</td>
+
 											
 										  </tr>
 										<% end %>

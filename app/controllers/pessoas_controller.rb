@@ -4,7 +4,7 @@ class PessoasController < ApplicationController
   # GET /pessoas
   # GET /pessoas.json
   def index
-    @pessoas = Pessoa.where("ativo = #{Constantes::ATIVO} and id not in (1)").order('pessoas.id desc').paginate(:page => params[:page], :per_page => 10)	
+    @pessoas = Pessoa.where("ativo = #{Constantes::ATIVO} and id not in (1)").order('pessoas.numero desc').paginate(:page => params[:page], :per_page => 10)	
   end
 
   # GET /pessoas/1

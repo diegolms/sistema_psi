@@ -50,7 +50,7 @@
 																	<thead>
 																		<tr>
 																		<% if current_user.isAdmin? %>
-																			<th scope="col">Usuário</th>
+																			<th scope="col">Pessoa</th>
 																		<% end %>
 																		<th scope="col">Mês/Ano</th>
 																		<th scope="col">Vencimento</th>
@@ -62,12 +62,22 @@
 																			<% @vencimentos.each do |vencimento| %>
 																				<tr>
 																					<% if current_user.isAdmin? %>
-																						<td><%= vencimento.user.nome %></td>
+																						<td><%= vencimento.user.pessoa.nome %></td>
 																					<% end %>
-																					<td><%= vencimento.data %></td>
-																					<td><%= vencimento.data_vencimento %></td>
-																					<td><%= vencimento.valor %></td>
-																					<td><%= vencimento.status %></td>																			
+																					<td><%= vencimento.data.strftime("%m/%Y") %></td>
+																					<td><%= vencimento.data_vencimento.strftime("%d/%m/%Y") %></td>
+																					<td><%= number_to_currency(vencimento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %></td>
+																					<td>
+																						<% if vencimento.status == Vencimento::ABERTO %>
+																							<span class="badge badge-pill badge-warning"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																						<% elsif vencimento.status == Vencimento::PAGO %>
+																							<span class="badge badge-pill badge-success"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																						<% elsif vencimento.status == Vencimento::VENCIDO %>
+																							<span class="badge badge-pill badge-danger"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																						<% end %>
+																					
+																							
+																					</td>																			
 																				</tr>
 																			<% end %>
 																		</tbody>

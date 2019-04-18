@@ -36,14 +36,14 @@
 
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
 							<% if current_user.isAdmin? %>
-								<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
-																		<i class="fa fa-plus"></i> Cadastrar
-								<% end %>
-							<% end %>
-																
-                            </div>
+								<div class="card-header">
+								
+									<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
+																			<i class="fa fa-plus"></i> Cadastrar
+									<% end %>
+								</div>
+							<% end %>	
                             <div class="card-body">
                                 <div class="table-responsive-sm">
 																	<table class="table">
