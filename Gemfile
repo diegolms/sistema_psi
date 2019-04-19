@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.3'
+ruby '2.6.0'
 
 gem 'bootstrap', '~> 4.0.0'
 
@@ -73,6 +73,5 @@ gem 'jquery-mask-plugin'
 gem 'themify-icons-rails' , github: 'scratch-soft/themify-icons-rails'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-gem 'rufo'
 gem 'prawn', '~> 2.1'
 gem 'prawn-table', '~> 0.2.2'

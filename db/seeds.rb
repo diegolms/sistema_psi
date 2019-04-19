@@ -20,7 +20,7 @@
     p1.save! 
 	p "Criando pessoa #{p1.nome}"
 	
-	p2 = Pessoa.new({nome: 'Silvia', numero: '304'})
+	p2 = Pessoa.new({nome: 'Ana Paula', numero: '201'})
     p2.save!
 	p "Criando pessoa #{p2.nome}"
 	
@@ -90,10 +90,10 @@
 	
 	
 	u = User.new({
-	  username: 'silvia',
-      email: 'silvia@gmail.com',
-      password: 'silvia123',
-      password_confirmation: 'silvia123',
+	  username: 'anapaula123',
+      email: 'anapaula@gmail.com',
+      password: 'anapaula123',
+      password_confirmation: 'anapaula123',
 	  perfil_id: 2,
 	  pessoa_id: p2.id
     })
