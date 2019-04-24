@@ -71,7 +71,23 @@ namespace :app do
   #  u.save
  # end
  
-	
+	  # Criar Vencimentos
+  task :criar_vencimento_usuarios => :environment do
+
+	 valor = ENV['valor']
+	 Pessoa.where("id != 1").each do |pessoa|
+	 
+  		 v = Vencimento.new({
+		  pessoa_id: pessoa.id,
+		  data: Time.now.beginning_of_month,
+		  data_vencimento: Time.now.beginning_of_month + 14.day,
+		  status: 1,
+		  valor: valor
+		 })
+		 v.save
+	 end
+	  
+	end 
   
 end
 

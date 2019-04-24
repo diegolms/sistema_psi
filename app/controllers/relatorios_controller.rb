@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'prawn'
 require 'prawn/table'
+require 'date'
+
 
 class RelatoriosController < ApplicationController
 
@@ -44,6 +46,9 @@ class RelatoriosController < ApplicationController
  
       @tipo_relatorio = params[:relatorio][:tipo].to_i
       session[:relatorio_tipo_relatorio] = @tipo_relatorio
+	  
+	  session[:relatorio_data] = Date.parse(@data_fim)
+
  
       template = ""
       
@@ -52,7 +57,7 @@ class RelatoriosController < ApplicationController
          @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
       end
  
-	  relatorio_pdf()	
+	  relatorio_pdf(@lancamentos)	
 	  
 	  pdf_filename = File.join(Rails.root, "tmp/relatorio.pdf")
 	  send_file(pdf_filename, :filename => "tmp/relatorio.pdf", :disposition => 'inline', :type => "application/pdf", :target => "_blank")
@@ -61,8 +66,7 @@ class RelatoriosController < ApplicationController
 	 	 
   end
   
-	def relatorio_pdf()
-  
+	def relatorio_pdf(lancamentos)
 
 		Prawn::Document.generate(File.join(Rails.root, "tmp/relatorio.pdf")) do |pdf|
 
@@ -77,59 +81,69 @@ class RelatoriosController < ApplicationController
 
 		  # Add the font style and size
 		  pdf.font "Helvetica"
-		  pdf.font_size font_size
+		  
 
 		  #start with EON Media Group
-		  pdf.text_box "Jesus do Porto V", :at => [address_x,  pdf.cursor]
-		  pdf.move_down lineheight_y
-		  pdf.text_box "1234 Some Street Suite 1703", :at => [address_x,  pdf.cursor]
-		  pdf.move_down lineheight_y
-		  pdf.text_box "Some City, ST 12345", :at => [address_x,  pdf.cursor]
-		  pdf.move_down lineheight_y
+		  #pdf.text_box "Jesus do Porto V", :at => [address_x,  pdf.cursor]
+		  #pdf.move_down lineheight_y
+		  #pdf.text_box "1234 Some Street Suite 1703", :at => [address_x,  pdf.cursor]
+		  #pdf.move_down lineheight_y
+		  #pdf.text_box "Some City, ST 12345", :at => [address_x,  pdf.cursor]
+		  #pdf.move_down lineheight_y
 
-		  last_measured_y = pdf.cursor
-		  pdf.move_cursor_to pdf.bounds.height
+		  #last_measured_y = pdf.cursor
+		  #pdf.move_cursor_to pdf.bounds.height
 
 		  #pdf.image logopath, :width => 215, :position => :right
 
-		  pdf.move_cursor_to last_measured_y
+		  #pdf.move_cursor_to last_measured_y
 
 		  # client address
-		  pdf.move_down 65
+		  #pdf.move_down 65
 		  last_measured_y = pdf.cursor
 
-		  pdf.text_box "Client Business Name", :at => [address_x,  pdf.cursor]
+		  pdf.font_size 20
+		  pdf.text_box "CONDOMÍNIO RESIDENCIAL", :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
+		  pdf.move_down 20
+		  pdf.text_box "JESUS DO PORTO V", :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
+		  pdf.move_down 30
+		  
+		  pdf.font_size 10
+		  pdf.text_box "Rua Bel. Manoel Pereira Diniz, 727, Jardim Cidade Universitária,", :at => [address_x,  pdf.cursor],:align => :center, :style => :bold
 		  pdf.move_down lineheight_y
-		  pdf.text_box "Client Contact Name", :at => [address_x,  pdf.cursor]
-		  pdf.move_down lineheight_y
-		  pdf.text_box "4321 Some Street Suite 1000", :at => [address_x,  pdf.cursor]
-		  pdf.move_down lineheight_y
-		  pdf.text_box "Some City, ST 12345", :at => [address_x,  pdf.cursor]
+		  pdf.text_box "João Pessoa/PB", :at => [address_x,  pdf.cursor],:align => :center, :style => :bold
+		  pdf.move_down 40
+		  
+		  pdf.font_size 20
+		  pdf.text_box "PRESTAÇÃO DE CONTAS", :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
+		  pdf.move_down 20
+		  pdf.text_box session[:relatorio_data].strftime("%B")+"/"+session[:relatorio_data].strftime("%Y") , :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
+		  pdf.move_down 30
 
 		  pdf.move_cursor_to last_measured_y
+		  
+		  pdf.font_size 15
 
-		  invoice_header_data = [ 
-			["Invoice #", "001"],
-			["Invoice Date", "December 1, 2011"],
-			["Amount Due", "$3,200.00 USD"]
-		  ]
-
-		  pdf.table(invoice_header_data, :position => invoice_header_x, :width => 215) do
-			style(row(0..1).columns(0..1), :padding => [1, 5, 1, 5], :borders => [])
-			style(row(2), :background_color => 'e9e9e9', :border_color => 'dddddd', :font_style => :bold)
-			style(column(1), :align => :right)
-			style(row(2).columns(0), :borders => [:top, :left, :bottom])
-			style(row(2).columns(1), :borders => [:top, :right, :bottom])
-		  end
-
-		  pdf.move_down 45
+		  pdf.move_down 170
+		  
+		  pdf.text_box "Receitas", :at => [0,  pdf.cursor], :style => :bold
+		  
+		  pdf.move_down 17
+		  
+		  pdf.font_size 9
 
 		  invoice_services_data = [ 
-			["Item", "Description", "Unit Cost", "Quantity", "Line Total"],
-			["Service Name", "Service Description", "320.00", "10", "$3,200.00"],
-			[" ", " ", " ", " ", " "]
+			["Item", "Descrição", "Quantidade", "Valor", "Total"],
+			["Item", "Descrição", "Quantidade", "Valor", "Total"]
 		  ]
 
+		  
+			lancamentos.select("count(id),valor, sum(valor)").where("tipo = #{Lancamento::MENSALIDADE}").group("valor").each do |d|
+				p d
+			end		  
+		  
+		  
+		  
 		  pdf.table(invoice_services_data, :width => pdf.bounds.width) do
 			style(row(1..-1).columns(0..-1), :padding => [4, 5, 4, 5], :borders => [:bottom], :border_color => 'dddddd')
 			style(row(0), :background_color => 'e9e9e9', :border_color => 'dddddd', :font_style => :bold)
@@ -182,6 +196,8 @@ class RelatoriosController < ApplicationController
 			style(row(0..-1).columns(0..-1), :padding => [1, 0, 1, 0], :borders => [])
 			style(row(0).columns(0), :font_style => :bold)
 		  end
+
+	
 		  
 			#DOWNLOAD
 		    ##pdf_filename = File.join(Rails.root, "tmp/relatorio.pdf")

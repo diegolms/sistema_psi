@@ -1,7 +1,7 @@
 class CreateVencimentos < ActiveRecord::Migration[5.2]
   def change
     create_table :vencimentos do |t|
-	  t.references :user, foreign_key: true
+	  t.references :pessoa, foreign_key: true
 	  t.date :data
 	  t.date :data_vencimento
 	  t.integer :status

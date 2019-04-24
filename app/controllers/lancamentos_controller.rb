@@ -45,6 +45,27 @@ class LancamentosController < ApplicationController
 	@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
 	@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
 	
+	
+	if(@lancamento.tipo == Lancamento::TIPO_LANCAMENTO_RECEITA)
+		if(@lancamento.categoria_id == Lancamento::MENSALIDADE)
+			vencimento = Vencimento.where("pessoa_id = #{@lancamento.pessoa_id} and data = '#{@lancamento.data_vencimento.beginning_of_month}'").first
+			if(vencimento)
+				vencimento.status = Vencimento::PAGO
+				vencimento.save!
+			else
+				v = Vencimento.new({
+					  pessoa_id: @lancamento.pessoa_id,
+					  data: Time.now.beginning_of_month,
+					  data_vencimento: Time.now.beginning_of_month + 14.day,
+					  status: 2,
+					  valor: @lancamento.valor
+					 })
+				v.save
+			end	
+		end	
+	end
+
+	
 	if(@lancamento.movimenta_caixa)
 		c = Caixa.new
 		c.tipo_lancamento = @lancamento.tipo
@@ -62,7 +83,7 @@ class LancamentosController < ApplicationController
 		
 	end
 	
-	@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
+	#@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
 
     respond_to do |format|
       if @lancamento.save!
@@ -109,7 +130,7 @@ class LancamentosController < ApplicationController
 			@lancamento.caixa_id = nil
 		end
 		
-		@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
+		#@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
       if @lancamento.update(lancamento_params)
 	    
         format.html { redirect_to lancamentos_url, notice: 'Lancamento editado com sucesso.' }

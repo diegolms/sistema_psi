@@ -35,15 +35,7 @@
 
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-							
-								<% if current_user.isAdmin? %>
-							
-																<%= link_to new_categorium_path, class: "btn btn-success btn-sm", style: "color: white" do %>
-																	<i class="fa fa-plus"></i> Cadastrar
-																<% end %>
-								<% end %>								
-                            </div>
+                           
                             <div class="card-body">
                                 <div class="table-responsive-sm">
 																	<table class="table">
@@ -51,6 +43,7 @@
 																		<tr>
 																		<% if current_user.isAdmin? %>
 																			<th scope="col">Pessoa</th>
+																			<th scope="col">Apt.</th>
 																		<% end %>
 																		<th scope="col">Mês/Ano</th>
 																		<th scope="col">Vencimento</th>
@@ -62,7 +55,8 @@
 																			<% @vencimentos.each do |vencimento| %>
 																				<tr>
 																					<% if current_user.isAdmin? %>
-																						<td><%= vencimento.user.pessoa.nome %></td>
+																						<td><%= vencimento.pessoa.nome %></td>
+																						<td><%= vencimento.pessoa.numero %></td>
 																					<% end %>
 																					<td><%= vencimento.data.strftime("%m/%Y") %></td>
 																					<td><%= vencimento.data_vencimento.strftime("%d/%m/%Y") %></td>

@@ -1,5 +1,5 @@
 class Vencimento < ApplicationRecord
-	belongs_to :user
+	belongs_to :pessoa
 	
 	ABERTO = 1
 	PAGO = 2

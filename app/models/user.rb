@@ -11,7 +11,6 @@ class User < ApplicationRecord
   
   belongs_to :perfil, optional: true, class_name: "Perfil", foreign_key: "perfil_id"
   belongs_to :pessoa, optional: true, class_name: "Pessoa", foreign_key: "pessoa_id"
-  has_many :vencimentos
 
   def login
     @login || self.username || self.email

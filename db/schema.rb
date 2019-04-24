@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_18_193723) do
+ActiveRecord::Schema.define(version: 2019_04_17_163914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,11 +29,6 @@ ActiveRecord::Schema.define(version: 2019_04_18_193723) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "ativo", default: true
-  end
-
-  create_table "documentos", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "lancamentos", force: :cascade do |t|
@@ -122,14 +117,14 @@ ActiveRecord::Schema.define(version: 2019_04_18_193723) do
   end
 
   create_table "vencimentos", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "pessoa_id"
     t.date "data"
     t.date "data_vencimento"
     t.integer "status"
     t.decimal "valor", precision: 14, scale: 2, default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_vencimentos_on_user_id"
+    t.index ["pessoa_id"], name: "index_vencimentos_on_pessoa_id"
   end
 
   add_foreign_key "caixas", "users"
@@ -137,5 +132,5 @@ ActiveRecord::Schema.define(version: 2019_04_18_193723) do
   add_foreign_key "lancamentos", "pessoas"
   add_foreign_key "perfil_regra_acessos", "perfils"
   add_foreign_key "relatorios", "users"
-  add_foreign_key "vencimentos", "users"
+  add_foreign_key "vencimentos", "pessoas"
 end
