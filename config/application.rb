@@ -17,5 +17,6 @@ module Jesusdoportov
     # the framework and any gems in your application.
 	#config.assets.initialize_on_precompile = false
 	config.i18n.default_locale = :'pt-BR'
+	I18n.enforce_available_locales = false
   end
 end

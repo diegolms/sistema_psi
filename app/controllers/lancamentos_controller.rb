@@ -58,7 +58,7 @@ class LancamentosController < ApplicationController
 					  data: Time.now.beginning_of_month,
 					  data_vencimento: Time.now.beginning_of_month + 14.day,
 					  status: 2,
-					  valor: @lancamento.valor
+					  valor: valor
 					 })
 				v.save
 			end	
@@ -132,6 +132,8 @@ class LancamentosController < ApplicationController
 		
 		#@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
       if @lancamento.update(lancamento_params)
+		@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
+		@lancamento.save!
 	    
         format.html { redirect_to lancamentos_url, notice: 'Lancamento editado com sucesso.' }
         format.json { render :show, status: :ok, location: @lancamento }

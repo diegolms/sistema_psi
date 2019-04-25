@@ -120,7 +120,7 @@ class RelatoriosController < ApplicationController
 		  pdf.font_size 20
 		  pdf.text_box "PRESTAÇÃO DE CONTAS", :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
 		  pdf.move_down 20
-		  pdf.text_box session[:relatorio_data].strftime("%B")+"/"+session[:relatorio_data].strftime("%Y") , :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
+		  pdf.text_box meses(session[:relatorio_data].strftime("%_m"))+"/"+session[:relatorio_data].strftime("%Y") , :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
 		  pdf.move_down 30
 
 		  pdf.move_cursor_to last_measured_y
@@ -143,10 +143,10 @@ class RelatoriosController < ApplicationController
 			mensalidade = lancamentos.where("tipo = #{Lancamento::MENSALIDADE}")
 			
 			invoice_services_data << ["Taxa de Condomínio",
-										session[:relatorio_data].strftime("%B")+"/"+session[:relatorio_data].strftime("%Y"),
+										meses(session[:relatorio_data].strftime("%_m"))+"/"+session[:relatorio_data].strftime("%Y"),
 										mensalidade.count,
-										mensalidade.select(:valor).distinct[0][:valor],	
-										mensalidade.sum(:valor)]
+										formatar_numero(mensalidade.select(:valor).distinct[0][:valor]),	
+										formatar_numero(mensalidade.sum(:valor))]
 			
 			total_receita += mensalidade.sum(:valor)
 		  
@@ -162,6 +162,23 @@ class RelatoriosController < ApplicationController
 			style(column(2..-1), :align => :right)
 			style(columns(0), :width => 75)
 			style(columns(1), :width => 275)
+		  end
+		  
+		  pdf.move_down 1
+		  
+
+		  invoice_services_totals_data = [ 
+			["Total Receitas", formatar_numero(total_receita) ],
+		  ]
+		  
+		  p "invoice_header_x #{invoice_header_x}"
+
+		  pdf.table(invoice_services_totals_data, :position => invoice_header_x+35, :width => 180) do
+			style(row(0..1).columns(0..1), :padding => [1, 5, 1, 5], :borders => [])
+			style(row(0), :font_style => :bold)
+			style(row(1), :font_style => :bold)			
+			style(column(1), :align => :right)
+
 		  end
 
 		  pdf.move_down 10
@@ -183,8 +200,8 @@ class RelatoriosController < ApplicationController
 		 		   invoice_services_data << [despesa.descricao,
 										despesa.observacao,
 										1,
-										despesa.valor,	
-										despesa.valor]
+										formatar_numero(despesa.valor),	
+										formatar_numero(despesa.valor)]
 										
 										total_despesa += despesa.valor
 		 end
@@ -204,14 +221,29 @@ class RelatoriosController < ApplicationController
 		  end
 
 		  pdf.move_down 1
+		  
 
 		  invoice_services_totals_data = [ 
-			["Total Arrecadado", total_receita],
-			["Total Despesas",total_despesa],
-			["Subtotal", total_receita-total_despesa]
+			["Total Despesas",formatar_numero(total_despesa)]
 		  ]
 
-		  pdf.table(invoice_services_totals_data, :position => invoice_header_x, :width => 215) do
+		  pdf.table(invoice_services_totals_data, :position => invoice_header_x+35, :width => 180) do
+			style(row(0..1).columns(0..1), :padding => [1, 5, 1, 5], :borders => [])
+			style(row(0), :font_style => :bold)
+			style(row(1), :font_style => :bold)
+			style(row(2), :background_color => 'e9e9e9', :border_color => 'dddddd', :font_style => :bold)
+			style(column(1), :align => :right)
+		  end
+		  
+		  pdf.move_down 20
+		  
+		  invoice_services_totals_data = [ 
+			["Total Receitas", formatar_numero(total_receita) ],
+			["Total Despesas",formatar_numero(total_despesa)],
+			["Subtotal", formatar_numero(total_receita-total_despesa)]
+		  ]
+
+		  pdf.table(invoice_services_totals_data, :position => 270, :width => 270) do
 			style(row(0..1).columns(0..1), :padding => [1, 5, 1, 5], :borders => [])
 			style(row(0), :font_style => :bold)
 			style(row(1), :font_style => :bold)
@@ -220,30 +252,65 @@ class RelatoriosController < ApplicationController
 			style(row(2).columns(0), :borders => [:top, :left, :bottom])
 			style(row(2).columns(1), :borders => [:top, :right, :bottom])
 		  end
-
-		  pdf.move_down 25
-
-		  invoice_terms_data = [ 
-			["Terms"],
-			["Payable upon receipt"]
+		  
+		  
+		  pdf.move_down 20
+		  
+		  mes_anterior = session[:relatorio_data] - 1.month
+		  proximo_mes = session[:relatorio_data] - 1.month
+		  
+		  caixa_atual = Caixa.last.valor
+		  
+		  invoice_services_totals_data = [ 
+			["Saldo Mês Anterior ("+meses(mes_anterior.strftime("%_m"))+"/"+mes_anterior.strftime("%Y")+")", formatar_numero(total_receita)],
+			["Saldo existente para mês de ("+meses(proximo_mes.strftime("%_m"))+"/"+proximo_mes.strftime("%Y")+")", formatar_numero(caixa_atual)],
 		  ]
 
-		  pdf.table(invoice_terms_data, :width => 275) do
-			style(row(0..-1).columns(0..-1), :padding => [1, 0, 1, 0], :borders => [])
-			style(row(0).columns(0), :font_style => :bold)
+		  pdf.table(invoice_services_totals_data, :position => 270, :width => 270) do
+			style(row(0..1).columns(0..1), :padding => [1, 5, 1, 5], :borders => [])
+			style(row(0), :font_style => :bold)
+			style(row(1), :font_style => :bold)
+			style(column(1), :align => :right)
 		  end
 
+		  pdf.move_down 50
+		  
+		  
+		  pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo positivo de #{formatar_numero(caixa_atual)} (#{Extenso.moeda(caixa_atual.to_f.to_s.gsub(".","").to_i)}).", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
+
+		  
+		  pdf.move_down 50
+		  
+		  data_atual = Time.now
+		  
+		  pdf.text_box "João Pessoa, "+data_atual.strftime("%d")+ " de " +meses(data_atual.strftime("%_m"))+ " de "+ data_atual.strftime("%Y")+".", :at => [address_x,  pdf.cursor], :align => :right, :style => :bold
 		  pdf.move_down 15
+		  pdf.text_box "_____________________________", :at => [address_x,  pdf.cursor], :align => :right, :style => :bold
+		  pdf.move_down 10
+		  pdf.text_box "Responsável", :at => [address_x,  pdf.cursor], :align => :right, :style => :bold
 
-		  invoice_notes_data = [ 
-			["Notes"],
-			["Thank you for doing business with Your Business Name"]
-		  ]
+		  
+		  #invoice_terms_data = [ 
+		#	["Terms"],
+		#	["Payable upon receipt"]
+		 # ]
 
-		  pdf.table(invoice_notes_data, :width => 275) do
-			style(row(0..-1).columns(0..-1), :padding => [1, 0, 1, 0], :borders => [])
-			style(row(0).columns(0), :font_style => :bold)
-		  end
+		 # pdf.table(invoice_terms_data, :width => 275) do
+		#	style(row(0..-1).columns(0..-1), :padding => [1, 0, 1, 0], :borders => [])
+		#	style(row(0).columns(0), :font_style => :bold)
+		 # end
+
+		 # pdf.move_down 15
+
+		 # invoice_notes_data = [ 
+		#	["Notes"],
+		#	["Thank you for doing business with Your Business Name"]
+		 # ]
+
+		 # pdf.table(invoice_notes_data, :width => 275) do
+		#	style(row(0..-1).columns(0..-1), :padding => [1, 0, 1, 0], :borders => [])
+		#	style(row(0).columns(0), :font_style => :bold)
+		 # end
 
 	
 		  
@@ -252,6 +319,39 @@ class RelatoriosController < ApplicationController
 			##send_file(pdf_filename, :filename => "relatorio.pdf", :type => "application/pdf")
 			###	
 
+		end
+	end
+	
+	def formatar_numero(numero)
+		ActionController::Base.helpers.number_to_currency(numero)
+	end
+	
+	def meses(mes)
+		case mes.to_i
+		when 1
+			"Janeiro"
+		when 2
+			"Fevereiro"
+		when 3		
+			"Março"
+		when 4
+			"Abril"
+		when 5
+			"Maio"
+		when 6
+			"Junho"
+		when 7		
+			"Julho"
+		when 8
+			"Agosto"
+		when 9
+			"Setembro"
+		when 10
+			"Outubro"
+		when 11	
+			"Novembro"
+		when 12
+			"Dezembro"			
 		end
 	end
 end
