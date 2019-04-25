@@ -257,7 +257,7 @@ class RelatoriosController < ApplicationController
 		  pdf.move_down 20
 		  
 		  mes_anterior = session[:relatorio_data] - 1.month
-		  proximo_mes = session[:relatorio_data] - 1.month
+		  proximo_mes = session[:relatorio_data] + 1.month
 		  
 		  caixa_atual = Caixa.last.valor
 		  
