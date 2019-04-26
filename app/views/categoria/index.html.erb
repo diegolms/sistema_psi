@@ -66,9 +66,9 @@
 																					<% end %>
 																					</td>
 																					<td>
-																					<%= link_to categorium, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm", style: "color: white" do %>
+																					<button type="button" class="btn btn-danger btn-sm mb-1" data-toggle="modal" data-target="#staticModal" data-id="<%= params[:controller] %>/<%= categorium.id %>">
 																						<i class="fa fa-times"></i>&nbsp; Remover
-																					<% end %>
+																					</button>
 																					</td>
 																				<% else %>
 																				<td>
@@ -91,3 +91,7 @@
                 </div>
             <!--/div--><!-- .animated -->
         </div><!-- .content -->
+		
+		 
+
+		

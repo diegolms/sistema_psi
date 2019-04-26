@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_163914) do
     t.integer "tipo"
     t.boolean "ativo", default: true
     t.bigint "pessoa_id"
-    t.boolean "movimenta_caixa", default: false
+    t.boolean "movimenta_caixa", default: true
     t.boolean "condominio", default: false
     t.integer "caixa_id"
     t.index ["categoria_id"], name: "index_lancamentos_on_categoria_id"
@@ -91,13 +91,6 @@ ActiveRecord::Schema.define(version: 2019_04_17_163914) do
 
   create_table "system_configs", force: :cascade do |t|
     t.boolean "installed", default: false
-  end
-
-  create_table "tipo_relatorios", force: :cascade do |t|
-    t.string "descricao"
-    t.integer "codigo"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -4,8 +4,55 @@ $( document ).ready(function() {
 		$('#relatorio_data_inicio').datepicker();
 		$('#relatorio_data_fim').datepicker();
 		
+		$('#relatorio_periodo').datepicker({
+		  changeMonth: true,
+		  changeYear: true,
+		  dateFormat: "M yy",
+		  showButtonPanel: true,
+		  currentText: "Mês atual",
+		  beforeShow: function(input) {
+			$(input).datepicker("widget").addClass('hide-calendar');
+		 },
+		  onChangeMonthYear: function (year, month, inst) {
+			$(this).val($.datepicker.formatDate('M yy', new Date(year, month - 1, 1)));
+			$('#relatorio_periodo_').val($.datepicker.formatDate('dd/mm/yy', new Date(year, month - 1, 1)))
+		  },
+		  onClose: function(dateText, inst) {
+			var month = $(".ui-datepicker-month :selected").val();
+			var year = $(".ui-datepicker-year :selected").val();
+			$(this).val($.datepicker.formatDate('M yy', new Date(year, month, 1)));
+			$('#relatorio_periodo_').val($.datepicker.formatDate('dd/mm/yy', new Date(year, month, 1)));
+		  }
+		}).focus(function () {
+		  $(".ui-datepicker-calendar").hide();
+		});
+
+		
+		$('#periodo_parcial').hide();
+		$('#periodo_fechado').hide();
+			
+		$('#relatorio_tipo').change(function() {
+			 opcao = $(this).val()
+			 if(opcao == ""){
+				$('#periodo_parcial').hide();
+				$('#periodo_fechado').hide();
+			 }else if(opcao == '1'){
+				$('#periodo_parcial').hide();
+				$('#periodo_fechado').show();
+			 }else if(opcao == '2'){
+				$('#periodo_parcial').show();
+				$('#periodo_fechado').hide();
+			 }
+		});
+		
 });
 </script>
+
+<style>
+.hide-calendar .ui-datepicker-calendar{
+  display: none;
+}
+</style>
 
 <div class="breadcrumbs">
             <div class="col-sm-4">
@@ -41,8 +88,8 @@ $( document ).ready(function() {
                                     <div class="card-body">
 										<%= form_with(model: relatorio, :url => '/relatorios/gerar_relatorio', local: true) do |form| %>
 																					
-											  <div class="form-row">
-											  <div class="form-group col-md-3">
+											  <div class="form-row" id="periodo_parcial">
+												<div class="form-group col-md-3">
 												  <label for="inputPassword4">Data Início</label>
 												  <%= form.text_field :data_inicio, :autocomplete => :off, class: "form-control", required: true, :value=>"#{Date.today.at_beginning_of_month.strftime("%d/%m/%Y")}" %>
 												</div>
@@ -54,10 +101,19 @@ $( document ).ready(function() {
 												
 											  </div>
 											  
+											  <div class="form-row" id="periodo_fechado">
+												<div class="form-group col-md-3">
+												  <label for="inputPassword4">Período</label>
+												  <%= form.text_field :periodo, :autocomplete => :off, class: "form-control", required: true %>
+												  <%= form.hidden_field :periodo_%>
+													
+												</div>
+											  </div>
+											  
 											  <div class="form-row">
 													<div class="form-group col-md-6">
 														<label>Tipo Relatório</label>
-														<%= form.select :tipo, TipoRelatorio.order("descricao").each.map {|l| [l.descricao, l.codigo]}, {:include_blank => 'Selecione'}, {:class => 'form-control', required: true} %>
+														<%= form.select :tipo, TipoRelatorio::RELATORIOS.collect { |p| [p[0], p[1]] }, {:include_blank => 'Selecione'}, {:class => 'form-control', required: true} %>
 										
 													</div>
 											  </div>

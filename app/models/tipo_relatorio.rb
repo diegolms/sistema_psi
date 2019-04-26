@@ -1,4 +1,7 @@
 class TipoRelatorio < ApplicationRecord
 
-    TIPO_LANCAMENTO = 1
+    PRESTACAO_CONTAS = 1
+	PARCIAL = 2
+	
+	RELATORIOS = {'Prestação de Contas' => PRESTACAO_CONTAS, 'Parcial' => PARCIAL}
 end

@@ -148,6 +148,11 @@ class LancamentosController < ApplicationController
   # DELETE /lancamentos/1.json
   def destroy
     @lancamento.ativo = Constantes::INATIVO
+	if(!@lancamento.caixa_id.nil?)
+		Caixa.find(@lancamento.caixa_id).destroy
+	end
+	
+	@lancamento.caixa_id = nil
 	@lancamento.save!
     respond_to do |format|
       format.html { redirect_to lancamentos_url, notice: 'Lancamento excluído com sucesso.' }

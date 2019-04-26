@@ -32,7 +32,7 @@ class RelatoriosController < ApplicationController
 
   def gerar_relatorio
 
-      p "chegou gerar relatorio"
+      p "chegou gerar relatorio #{params}"
       
      if params[:authenticity_token].nil?
       redirect_to '/relatorios/new'
@@ -260,9 +260,11 @@ class RelatoriosController < ApplicationController
 		  proximo_mes = session[:relatorio_data] + 1.month
 		  
 		  caixa_atual = Caixa.last.valor
+		  caixa_anterior = Caixa.where("date(created_at) BETWEEN ? AND ? ", mes_anterior.at_beginning_of_month, mes_anterior.at_end_of_month).last
+		  caixa_anterior = (caixa_anterior.nil? ? 0 : caixa_anterior.valor)
 		  
 		  invoice_services_totals_data = [ 
-			["Saldo Mês Anterior ("+meses(mes_anterior.strftime("%_m"))+"/"+mes_anterior.strftime("%Y")+")", formatar_numero(total_receita)],
+			["Saldo Mês Anterior ("+meses(mes_anterior.strftime("%_m"))+"/"+mes_anterior.strftime("%Y")+")", formatar_numero(caixa_anterior)],
 			["Saldo existente para mês de ("+meses(proximo_mes.strftime("%_m"))+"/"+proximo_mes.strftime("%Y")+")", formatar_numero(caixa_atual)],
 		  ]
 

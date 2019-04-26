@@ -96,6 +96,7 @@ GEM
       warden (~> 1.2.3)
     erubi (1.8.0)
     execjs (2.7.0)
+    extensobr (0.1.0)
     ffi (1.10.0-x64-mingw32)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
@@ -247,6 +248,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
+  extensobr
   font-awesome-rails
   jbuilder (~> 2.5)
   jquery-mask-plugin
