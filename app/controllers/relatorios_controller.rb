@@ -37,25 +37,28 @@ class RelatoriosController < ApplicationController
      if params[:authenticity_token].nil?
       redirect_to '/relatorios/new'
      else
-
-      @data_inicio = params[:relatorio][:data_inicio]
-      session[:relatorio_data_inicio] = @data_inicio
- 
-      @data_fim = params[:relatorio][:data_fim]
-      session[:relatorio_data_fim] = @data_fim
  
       @tipo_relatorio = params[:relatorio][:tipo].to_i
       session[:relatorio_tipo_relatorio] = @tipo_relatorio
-	  
-	  session[:relatorio_data] = Date.parse(@data_fim)
-
  
       template = ""
       
-      if(@tipo_relatorio == TipoRelatorio::TIPO_LANCAMENTO)
+      if(@tipo_relatorio == TipoRelatorio::PRESTACAO_CONTAS)
+	     session[:relatorio_periodo_inicio] = Date.parse(params[:relatorio][:periodo_])
+	     session[:relatorio_periodo_fim] =  session[:relatorio_periodo_inicio].at_end_of_month
          template = "relatorios/lancamentos.html.erb"
          @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
-      end
+      else if(@tipo_relatorio == TipoRelatorio::PARCIAL)
+		 @data_inicio = params[:relatorio][:data_inicio]
+		  session[:relatorio_data_inicio] = @data_inicio
+	 
+		  @data_fim = params[:relatorio][:data_fim]
+		  session[:relatorio_data_fim] = @data_fim
+		  session[:relatorio_data] = Date.parse(@data_fim)
+	     template = "relatorios/lancamentos.html.erb"
+         @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
+	  
+	  end
  
 	  relatorio_pdf(@lancamentos)	
 	  
