@@ -8,6 +8,7 @@ class RelatoriosController < ApplicationController
 
   def new
     @relatorio = Relatorio.new
+	session = nil
   end  
 
   def download_pdf
@@ -32,7 +33,7 @@ class RelatoriosController < ApplicationController
 
   def gerar_relatorio
 
-      p "chegou gerar relatorio #{params}"
+      
       
      if params[:authenticity_token].nil?
       redirect_to '/relatorios/new'
@@ -44,19 +45,23 @@ class RelatoriosController < ApplicationController
       template = ""
       
       if(@tipo_relatorio == TipoRelatorio::PRESTACAO_CONTAS)
+		p "prestação contas"
 	     session[:relatorio_periodo_inicio] = Date.parse(params[:relatorio][:periodo_])
 	     session[:relatorio_periodo_fim] =  session[:relatorio_periodo_inicio].at_end_of_month
          template = "relatorios/lancamentos.html.erb"
          @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", session[:relatorio_periodo_inicio], session[:relatorio_periodo_fim])
       elsif(@tipo_relatorio == TipoRelatorio::PARCIAL)
+		
 		 @data_inicio = params[:relatorio][:data_inicio]
 		  session[:relatorio_data_inicio] = @data_inicio
 	 
 		  @data_fim = params[:relatorio][:data_fim]
 		  session[:relatorio_data_fim] = @data_fim
 		  session[:relatorio_data] = Date.parse(@data_fim)
-	     template = "relatorios/lancamentos.html.erb"
-         @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
+	      template = "relatorios/lancamentos.html.erb"
+          @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
+		 
+		 p "prcial #{session[:relatorio_data]} - #{Date.parse(@data_fim)}"
 	  
 	  end
  
@@ -72,6 +77,16 @@ class RelatoriosController < ApplicationController
 	def relatorio_pdf(lancamentos)
 
 		Prawn::Document.generate(File.join(Rails.root, "tmp/relatorio.pdf")) do |pdf|
+		
+         titulo = "" 		 
+		 if(session[:relatorio_tipo_relatorio] == TipoRelatorio::PRESTACAO_CONTAS)
+			session[:relatorio_data] = session[:relatorio_periodo_fim]			
+			titulo = "PRESTAÇÃO DE CONTAS"
+		 elsif(session[:relatorio_tipo_relatorio] == TipoRelatorio::PRESTACAO_CONTAS)	
+		 	titulo = "LANCAMENTOS"
+		 end
+		 
+		 p session[:relatorio_tipo_relatorio]
 
 		  initial_y = pdf.cursor
 		  initialmove_y = 5
@@ -121,11 +136,10 @@ class RelatoriosController < ApplicationController
 		  pdf.move_down 40
 		  
 		  pdf.font_size 20
-		  pdf.text_box "PRESTAÇÃO DE CONTAS", :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
+		  pdf.text_box titulo, :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
 		  pdf.move_down 20
-		  if !session[:relatorio_periodo_fim].nil?
-			session[:relatorio_data] = session[:relatorio_periodo_fim]
-		  end
+      
+
 		  
 		  
 		  pdf.text_box meses(session[:relatorio_data].strftime("%_m"))+"/"+session[:relatorio_data].strftime("%Y") , :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
