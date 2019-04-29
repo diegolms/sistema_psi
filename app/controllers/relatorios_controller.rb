@@ -47,8 +47,8 @@ class RelatoriosController < ApplicationController
 	     session[:relatorio_periodo_inicio] = Date.parse(params[:relatorio][:periodo_])
 	     session[:relatorio_periodo_fim] =  session[:relatorio_periodo_inicio].at_end_of_month
          template = "relatorios/lancamentos.html.erb"
-         @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", Date.parse(@data_inicio), Date.parse(@data_fim))
-      else if(@tipo_relatorio == TipoRelatorio::PARCIAL)
+         @lancamentos = Lancamento.where(" date(data_pagamento) BETWEEN ? AND ? ", session[:relatorio_periodo_inicio], session[:relatorio_periodo_fim])
+      elsif(@tipo_relatorio == TipoRelatorio::PARCIAL)
 		 @data_inicio = params[:relatorio][:data_inicio]
 		  session[:relatorio_data_inicio] = @data_inicio
 	 
@@ -123,6 +123,11 @@ class RelatoriosController < ApplicationController
 		  pdf.font_size 20
 		  pdf.text_box "PRESTAÇÃO DE CONTAS", :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
 		  pdf.move_down 20
+		  if !session[:relatorio_periodo_fim].nil?
+			session[:relatorio_data] = session[:relatorio_periodo_fim]
+		  end
+		  
+		  
 		  pdf.text_box meses(session[:relatorio_data].strftime("%_m"))+"/"+session[:relatorio_data].strftime("%Y") , :at => [address_x,  pdf.cursor], :align => :center, :style => :bold
 		  pdf.move_down 30
 
@@ -137,13 +142,17 @@ class RelatoriosController < ApplicationController
 		  pdf.move_down 17
 		  
 		  pdf.font_size 9
-
-		  invoice_services_data = [ 
+		  
+		  mensalidade = lancamentos.where("tipo = #{Lancamento::MENSALIDADE}")
+		  
+		   invoice_services_data = [ 
 			["Item", "Descrição", "Quantidade", "Valor", "Total"]
 		  ]
-
 		  
-			mensalidade = lancamentos.where("tipo = #{Lancamento::MENSALIDADE}")
+		 if(mensalidade.size != 0)
+			 invoice_services_data = [ 
+			["Item", "Descrição", "Quantidade", "Valor", "Total"]
+		  ]
 			
 			invoice_services_data << ["Taxa de Condomínio",
 										meses(session[:relatorio_data].strftime("%_m"))+"/"+session[:relatorio_data].strftime("%Y"),
@@ -169,6 +178,9 @@ class RelatoriosController < ApplicationController
 		  
 		  pdf.move_down 1
 		  
+		 end
+
+		 
 
 		  invoice_services_totals_data = [ 
 			["Total Receitas", formatar_numero(total_receita) ],
@@ -198,8 +210,10 @@ class RelatoriosController < ApplicationController
 			["Item", "Descrição", "Quantidade", "Valor", "Total"]
 		  ]
 
+		  mensalidade = lancamentos.where("tipo != #{Lancamento::MENSALIDADE}")
 		  
-		 mensalidade = lancamentos.where("tipo != #{Lancamento::MENSALIDADE}").each do |despesa|
+		if(mensalidade.size != 0)
+			 mensalidade.each do |despesa|
 		 		   invoice_services_data << [despesa.descricao,
 										despesa.observacao,
 										1,
@@ -224,6 +238,9 @@ class RelatoriosController < ApplicationController
 		  end
 
 		  pdf.move_down 1
+		end
+		  
+		
 		  
 
 		  invoice_services_totals_data = [ 
@@ -280,8 +297,12 @@ class RelatoriosController < ApplicationController
 
 		  pdf.move_down 50
 		  
+		  if(caixa_atual == 0)
+			pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo de #{formatar_numero(caixa_atual)}.", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
+		  else
+			pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo positivo de #{formatar_numero(caixa_atual)} (#{Extenso.moeda(caixa_atual.to_f.to_s.gsub(".","").to_i)}).", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
+		  end
 		  
-		  pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo positivo de #{formatar_numero(caixa_atual)} (#{Extenso.moeda(caixa_atual.to_f.to_s.gsub(".","").to_i)}).", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
 
 		  
 		  pdf.move_down 50
@@ -333,30 +354,30 @@ class RelatoriosController < ApplicationController
 	
 	def meses(mes)
 		case mes.to_i
-		when 1
-			"Janeiro"
-		when 2
-			"Fevereiro"
-		when 3		
-			"Março"
-		when 4
-			"Abril"
-		when 5
-			"Maio"
-		when 6
-			"Junho"
-		when 7		
-			"Julho"
-		when 8
-			"Agosto"
-		when 9
-			"Setembro"
-		when 10
-			"Outubro"
-		when 11	
-			"Novembro"
-		when 12
-			"Dezembro"			
-		end
+			when 1
+				"Janeiro"
+			when 2
+				"Fevereiro"
+			when 3		
+				"Março"
+			when 4
+				"Abril"
+			when 5
+				"Maio"
+			when 6
+				"Junho"
+			when 7		
+				"Julho"
+			when 8
+				"Agosto"
+			when 9
+				"Setembro"
+			when 10
+				"Outubro"
+			when 11	
+				"Novembro"
+			when 12
+				"Dezembro"			
+			end
 	end
 end
