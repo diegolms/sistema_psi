@@ -72,14 +72,24 @@ namespace :app do
  # end
  
 	  # Criar Vencimentos
+	  # rake app:criar_vencimento_usuarios valor=150 dia=1  
   task :criar_vencimento_usuarios => :environment do
 
 	 valor = ENV['valor']
+	
+     dia = ENV['dia']
+	 
+	 if (dia.to_i) > 0
+		data = (Time.now + (dia.to_i).day).beginning_of_month
+	 else
+		data = Time.now.beginning_of_month
+	 end
+	 
 	 Pessoa.where("id != 1").each do |pessoa|
 	 
   		 v = Vencimento.new({
 		  pessoa_id: pessoa.id,
-		  data: Time.now.beginning_of_month,
+		  data: data,
 		  data_vencimento: Time.now.beginning_of_month + 14.day,
 		  status: 1,
 		  valor: valor
