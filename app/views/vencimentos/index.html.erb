@@ -63,11 +63,15 @@
 																					<td><%= number_to_currency(vencimento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %></td>
 																					<td>
 																						<% if vencimento.status == Vencimento::ABERTO %>
-																							<span class="badge badge-pill badge-warning"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																						<button type="button" class="badge badge-pill badge-warning" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>/<%= vencimento.id %>">
+																							<%= Vencimento::STATUS.invert[vencimento.status] %>
+																						</button>
 																						<% elsif vencimento.status == Vencimento::PAGO %>
 																							<span class="badge badge-pill badge-success"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
 																						<% elsif vencimento.status == Vencimento::VENCIDO %>
-																							<span class="badge badge-pill badge-danger"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																							<button type="button" class="badge badge-pill badge-danger" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>/<%= vencimento.id %>">
+																							<%= Vencimento::STATUS.invert[vencimento.status] %>
+																						</button>
 																						<% end %>
 																					
 																							

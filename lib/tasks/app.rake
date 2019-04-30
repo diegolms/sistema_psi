@@ -90,7 +90,7 @@ namespace :app do
   		 v = Vencimento.new({
 		  pessoa_id: pessoa.id,
 		  data: data,
-		  data_vencimento: Time.now.beginning_of_month + 14.day,
+		  data_vencimento: data.beginning_of_month + 14.day,
 		  status: 1,
 		  valor: valor
 		 })

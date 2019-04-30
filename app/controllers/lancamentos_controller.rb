@@ -58,7 +58,7 @@ class LancamentosController < ApplicationController
 					  data: Time.now.beginning_of_month,
 					  data_vencimento: Time.now.beginning_of_month + 14.day,
 					  status: 2,
-					  valor: valor
+					  valor: @lancamento.valor
 					 })
 				v.save
 			end	

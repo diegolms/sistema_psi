@@ -5,7 +5,7 @@ class VencimentosController < ApplicationController
   # GET /vencimentos.json
   def index
     conditions = 
-	@vencimentos = Vencimento.where(current_user.isAdmin? ? "" : "user_id = #{current_user.id}").order('vencimentos.data desc').paginate(:page => params[:page], :per_page => 10)
+	@vencimentos = Vencimento.where(current_user.isAdmin? ? "" : "user_id = #{current_user.id}").order('vencimentos.id asc, data').paginate(:page => params[:page], :per_page => 10)
   end
 
   # GET /vencimentos/1
@@ -55,9 +55,34 @@ class VencimentosController < ApplicationController
   # DELETE /vencimentos/1
   # DELETE /vencimentos/1.json
   def destroy
-    @vencimento.destroy
+    #@vencimento.destroy
+	@vencimento.status = params[:status].to_i
+	@vencimento.save!
+	
+	lancamento = Lancamento.new
+	lancamento.descricao = "Mensalidade #{@vencimento.data.strftime("%m/%Y")}"
+	lancamento.data_vencimento = @vencimento.data_vencimento
+	lancamento.data_pagamento =  Time.now
+	lancamento.valor =  150
+	lancamento.categoria_id =  Lancamento::MENSALIDADE
+	lancamento.tipo =  Lancamento::TIPO_LANCAMENTO_RECEITA
+	lancamento.pessoa_id =  @vencimento.pessoa_id
+	
+	lancamento.save!
+	
+	c = Caixa.new
+	c.tipo_lancamento = lancamento.tipo
+	cAtual = Caixa.last.valor
+	c.valor = cAtual + lancamento.valor	
+	c.user_id = current_user.id
+	c.save!
+	
+	lancamento.caixa_id = c.id
+	lancamento.save!
+	
+	
     respond_to do |format|
-      format.html { redirect_to vencimentos_url, notice: 'Vencimento was successfully destroyed.' }
+      format.html { redirect_to vencimentos_url, notice: 'Vencimento alterado com sucesso' }
       format.json { head :no_content }
     end
   end
