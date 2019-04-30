@@ -86,7 +86,7 @@ $( document ).ready(function() {
                                 <!-- Credit Card -->
                                 <div id="pay-invoice">
                                     <div class="card-body">
-										<%= form_with(model: relatorio, :url => '/relatorios/gerar_relatorio', local: true) do |form| %>
+										<%= form_with(model: relatorio, :url => '/relatorios/gerar_relatorio', local: true, :novalidate => true) do |form| %>
 																					
 											  <div class="form-row" id="periodo_parcial">
 												<div class="form-group col-md-3">
@@ -104,7 +104,7 @@ $( document ).ready(function() {
 											  <div class="form-row" id="periodo_fechado">
 												<div class="form-group col-md-3">
 												  <label for="inputPassword4">Período</label>
-												  <%= form.text_field :periodo, :autocomplete => :off, class: "form-control", required: true %>
+												  <%= form.text_field :periodo, :autocomplete => :off, class: "form-control", required: true,:value=>"#{Date.today.at_beginning_of_month.strftime("%d/%m/%Y")}" %>
 												  <%= form.hidden_field :periodo_%>
 													
 												</div>
