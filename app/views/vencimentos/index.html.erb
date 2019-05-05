@@ -63,15 +63,27 @@
 																					<td><%= number_to_currency(vencimento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %></td>
 																					<td>
 																						<% if vencimento.status == Vencimento::ABERTO %>
-																						<button type="button" class="badge badge-pill badge-warning" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>/<%= vencimento.id %>">
-																							<%= Vencimento::STATUS.invert[vencimento.status] %>
-																						</button>
+																						<% if current_user.isAdmin? %>
+																							<button type="button" class="badge badge-pill badge-warning" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>/<%= vencimento.id %>">
+																								<%= Vencimento::STATUS.invert[vencimento.status] %>
+																							</button>
+																						<% else %>
+																								<span class="badge badge-pill badge-warning"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																						<% end %>
+
 																						<% elsif vencimento.status == Vencimento::PAGO %>
-																							<span class="badge badge-pill badge-success"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																							<%= link_to vencimento_path(vencimento), class: "badge badge-pill badge-success", style: "color: white" do %>
+																								 <%= Vencimento::STATUS.invert[vencimento.status] %>&nbsp; &nbsp; <i class="fa fa-file"></i>
+																							<% end %>
 																						<% elsif vencimento.status == Vencimento::VENCIDO %>
-																							<button type="button" class="badge badge-pill badge-danger" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>/<%= vencimento.id %>">
-																							<%= Vencimento::STATUS.invert[vencimento.status] %>
-																						</button>
+																							<% if current_user.isAdmin? %>
+																								<button type="button" class="badge badge-pill badge-danger" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>/<%= vencimento.id %>">
+																									<%= Vencimento::STATUS.invert[vencimento.status] %>
+																								</button>
+																							<% else %>
+																									<span class="badge badge-pill badge-danger"><%= Vencimento::STATUS.invert[vencimento.status] %></span>
+																							<% end %>
+																							
 																						<% end %>
 																					
 																							

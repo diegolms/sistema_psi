@@ -8,7 +8,7 @@ class RelatoriosController < ApplicationController
 
   def new
     @relatorio = Relatorio.new
-	session = nil
+   	session = nil
   end  
 
   def download_pdf
