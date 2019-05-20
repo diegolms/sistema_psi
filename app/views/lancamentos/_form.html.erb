@@ -100,7 +100,7 @@ $( document ).ready(function() {
 											  <div class="form-row">
 											  <div class="form-group col-md-3">
 												  <label for="inputPassword4">Data Pagamento</label>
-												  <%= form.text_field :data_pagamento, :autocomplete => :off, class: "form-control", required: true, :value=>"#{@lancamento.data_pagamento.strftime("%d/%m/%Y") unless @lancamento.new_record?}" %>
+												  <%= form.text_field :data_pagamento, :autocomplete => :off, class: "form-control", :value=>"#{( @lancamento.data_pagamento.nil? ? "" : @lancamento.data_pagamento.strftime("%d/%m/%Y") ) unless @lancamento.new_record?}" %>
 												</div>
 												
 											    <div class="form-group col-md-3">

@@ -64,7 +64,7 @@
 									  <% @lancamentos.each do |lancamento| %>
 										  <tr>
 											<td><%= lancamento.descricao %></td>
-											<td><%= lancamento.data_pagamento.strftime("%d/%m/%Y") %></td>
+											<td><%= lancamento.data_pagamento.nil? ? "A PAGAR" : lancamento.data_pagamento.strftime("%d/%m/%Y") %></td>
 											<td><%= lancamento.data_vencimento.strftime("%d/%m/%Y") %></td>
 											<td><%= Lancamento::TIPO_LANCAMENTO.invert[lancamento.tipo] %></td>
 											<td><%= lancamento.categoria.nome %></td>
