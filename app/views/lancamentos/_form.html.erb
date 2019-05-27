@@ -167,11 +167,11 @@ $( document ).ready(function() {
 												  <label class="d-flex justify-content-center mb-3">Anexo</label>
 												  <div class="col-md-12 col-lg-12">
 													<div class="row d-flex justify-content-center align-items-center">
-													  <% if (params[:action] == 'new') %>
-														<label id="target" for="customFile"></label>
-													  <% elsif !lancamento.attachment.url.nil? %>
-														<label id="target" for="customFile" style="background-image: url(<%= image_path lancamento.attachment.url %>)"></label>
-													  <% end %>
+													  <label id="target" for="customFile">
+													  	<% if !lancamento.attachment.url.nil? %>
+													  		<%= image_tag lancamento.attachment.url %>
+													  	<% end %>
+													  </label>	
 													</div>
 												  </div>
 												</div>
