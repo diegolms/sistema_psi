@@ -56,6 +56,7 @@
 										<th scope="col">Categoria</th>
 										<th scope="col">Pessoa</th>
 										<th scope="col">Valor</th>
+										<th scope="col">Anexo</th>
 										<th scope="col"></th>
 										<th scope="col"></th>
 									  </tr>
@@ -69,12 +70,18 @@
 											<td><%= Lancamento::TIPO_LANCAMENTO.invert[lancamento.tipo] %></td>
 											<td><%= lancamento.categoria.nome %></td>
 											<td><%= lancamento.pessoa.nome %></td>
-												<% if lancamento.tipo == Lancamento::TIPO_LANCAMENTO_RECEITA %>
+											<% if lancamento.tipo == Lancamento::TIPO_LANCAMENTO_RECEITA %>
 													<td style='color:green'><%= number_to_currency(lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %></td>
 												<% else %>
 													<td style='color:red'><%= number_to_currency(lancamento.valor, :unit => "R$ ", :separator => ",", :delimiter => ".") %></td>
-												<% end %>
-												
+											<% end %>
+											<td>
+											   <% if lancamento.attachment_url %>
+													<%= link_to lancamento.attachment_url, target: :_blank do%>    
+														<i class="fa fa-paperclip"></i>
+													<% end %>    
+												<% end %>	
+											</td>
 											<td>
 											<%= link_to edit_lancamento_path(lancamento), class: "btn btn-primary btn-sm", style: "color: white" do %>
 												<i class="fa fa-edit"></i>&nbsp; Editar

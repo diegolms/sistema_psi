@@ -1,5 +1,11 @@
 class LancamentosController < ApplicationController
   before_action :set_lancamento, only: [:show, :edit, :update, :destroy]
+  
+  before_action :check_configuration
+
+  def check_configuration
+    render 'configuration_missing' if Cloudinary.config.api_key.blank?
+  end
 
   # GET /lancamentos
   # GET /lancamentos.json
@@ -29,6 +35,21 @@ class LancamentosController < ApplicationController
   def new
     @lancamento = Lancamento.new
 	@lancamento.tipo = Lancamento::TIPO_LANCAMENTO_RECEITA
+
+    if params[:unsigned].present?
+      @unsigned = true
+      # make sure we have the appropriate preset
+      @preset_name = "sample_" + Digest::SHA1.hexdigest(Cloudinary.config.api_key + Cloudinary.config.api_secret)
+      begin
+        preset = Cloudinary::Api.upload_preset(@preset_name)
+        if !preset["settings"]["return_delete_token"]
+          Cloudinary::Api.update_upload_preset(@preset_name, :return_delete_token=>true)
+        end
+      rescue
+        # An upload preset may contain (almost) all parameters that are used in upload. The following is just for illustration purposes
+        Cloudinary::Api.create_upload_preset(:name => @preset_name, :unsigned => true, :folder => "preset_folder", :return_delete_token=>true)
+      end
+    end
   end
 
   # GET /lancamentos/1/edit
@@ -43,8 +64,7 @@ class LancamentosController < ApplicationController
     @lancamento.pessoa_id = params[:lancamento][:pessoa_id]
     @lancamento.categoria_id = params[:lancamento][:categoria_id]
 	@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
-	@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
-	
+	@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])	
 	
 	if(@lancamento.tipo == Lancamento::TIPO_LANCAMENTO_RECEITA)
 		if(@lancamento.categoria_id == Lancamento::MENSALIDADE)
@@ -104,7 +124,7 @@ class LancamentosController < ApplicationController
 		@lancamento.categoria_id = params[:lancamento][:categoria_id]
 		@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
 		@lancamento.movimenta_caixa = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:movimenta_caixa])
-		p "params #{params[:lancamento][:tipo]}"
+
 		if(@lancamento.movimenta_caixa)
 			if(@lancamento.caixa_id.nil?)
 				c = Caixa.new
@@ -132,12 +152,14 @@ class LancamentosController < ApplicationController
 		
 		#@lancamento.condominio = ActiveRecord::Type::Boolean.new.cast(params[:lancamento][:condominio])
       if @lancamento.update(lancamento_params)
+		p "salvou"
 		@lancamento.valor = params[:lancamento][:valor].gsub(",", ".")
 		@lancamento.save!
 	    
         format.html { redirect_to lancamentos_url, notice: 'Lancamento editado com sucesso.' }
         format.json { render :show, status: :ok, location: @lancamento }
       else
+		p "nao salvou"
         format.html { render :edit }
         format.json { render json: @lancamento.errors, status: :unprocessable_entity }
       end
@@ -168,6 +190,8 @@ class LancamentosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def lancamento_params
-      params.require(:lancamento).permit(:descricao, :data_vencimento, :data_pagamento, :valor, :observacao, :categoria_id, :pessoa_id, :tipo)
+      params.require(:lancamento).permit(:descricao, :data_vencimento, :data_pagamento, :valor, :observacao, :categoria_id, :pessoa_id, :tipo, :attachment)
+
     end
+
 end

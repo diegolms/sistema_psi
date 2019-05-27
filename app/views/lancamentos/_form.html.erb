@@ -37,6 +37,22 @@ $( document ).ready(function() {
 				$('#tipoLancamento').html("<b> Tipo Lançamento: </b> <span style='color:red;font-weight:bold'>Despesa</span>"); 
 			}
 		});
+		
+		  $('#lancamento_attachment').on('change', function(event) {
+			var files = event.target.files;
+			var image = files[0]
+			// here's the file size
+			console.log(image.size);
+			var reader = new FileReader();
+			reader.onload = function(file) {
+			  var img = new Image();
+			  console.log(file);
+			  img.src = file.target.result;
+			  $('#target').html(img);
+			}
+			reader.readAsDataURL(image);
+			console.log(files);
+		  });
 
 });
 </script>
@@ -141,6 +157,26 @@ $( document ).ready(function() {
 												  <%= form.text_area :observacao, autofocus: true, autocomplete: "nome", class: "form-control" %>
 												</div>
 											  </div>
+											  
+											  <div class="form-row">
+												<div class="form-group col-md-12">
+												    <%= form.file_field :attachment %>
+												</div>
+												
+												<div class="col-md-12 col-lg-12 campoImagem">
+												  <label class="d-flex justify-content-center mb-3">Anexo</label>
+												  <div class="col-md-12 col-lg-12">
+													<div class="row d-flex justify-content-center align-items-center">
+													  <% if (params[:action] == 'new') %>
+														<label id="target" for="customFile"></label>
+													  <% elsif !lancamento.attachment.url.nil? %>
+														<label id="target" for="customFile" style="background-image: url(<%= image_path lancamento.attachment.url %>)"></label>
+													  <% end %>
+													</div>
+												  </div>
+												</div>
+												
+											  </div>											  
 											  
 											  
 											  <%= link_to 'Cancelar', lancamentos_path, class: "btn btn-danger btn-sm", style: "color: white" %>
