@@ -1,0 +1,38 @@
+development:
+  cloud_name: dty0sx4dc
+  api_key: '172865215917555'
+  api_secret: QsW8Fr1sV5Ty_kOLGO9O6VrTGTA
+  enhance_image_tag: true
+  static_file_support: false
+production:
+  cloud_name: dty0sx4dc
+  api_key: '172865215917555'
+  api_secret: QsW8Fr1sV5Ty_kOLGO9O6VrTGTA
+  enhance_image_tag: true
+  static_file_support: true
+test:
+  cloud_name: dty0sx4dc
+  api_key: '172865215917555'
+  api_secret: QsW8Fr1sV5Ty_kOLGO9O6VrTGTA
+  enhance_image_tag: true
+  static_file_support: false
+
+#   ---
+# development:
+#   cloud_name: ENV['cloudinary_name']
+#   api_key: ENV['cloud_api_key']
+#   api_secret: ENV['cloud_api_secret']
+#   enhance_image_tag: true
+#   static_image_support: false
+# production:
+#   cloud_name: ENV['cloudinary_name']
+#   api_key: ENV['cloud_api_key']
+#   api_secret: ENV['cloud_api_secret']
+#   enhance_image_tag: true
+#   static_image_support: true
+# test:
+#   cloud_name: ENV['cloudinary_name']
+#   api_key: ENV['cloud_api_key']
+#   api_secret: ENV['cloud_api_secret']
+#   enhance_image_tag: true
+#   static_image_support: false
