@@ -9,9 +9,29 @@ class VencimentosController < ApplicationController
   # GET /vencimentos
   # GET /vencimentos.json
   def index
-    p "chegou"
-    conditions =
-      @vencimentos = Vencimento.where(current_user.isAdmin? ? "" : "pessoa_id = #{current_user.pessoa.id}").order("vencimentos.id asc, data").paginate(:page => params[:page], :per_page => 10)
+  
+  
+		p "params #{params}"
+		
+	  conditions = 	current_user.isAdmin? ? "pessoa_id is not null" : "pessoa_id = #{current_user.pessoa.id}"
+	  @meses = Vencimento.where(conditions).order("vencimentos.id asc, data").group(:data)
+	  @pessoas = Pessoa.where(:ativo => Constantes::ATIVO).where.not(id: 1).order("id asc")
+	  
+	  if !params[:vencimento].nil?
+			if !params[:vencimento][:mes].empty?	
+				p "params #{params[:vencimento][:mes]}"	
+				p "params empty #{params[:vencimento][:mes].empty?}"	
+				conditions += " and data = '#{params[:vencimento][:mes]}'"
+			end
+			
+			 if !params[:vencimento][:pessoa_id].empty?
+				conditions += " and pessoa_id = '#{params[:vencimento][:pessoa_id]}'"	  
+			end
+			
+	  end
+	 	  
+      @vencimentos = Vencimento.where(conditions).order("vencimentos.id asc, data").paginate(:page => params[:page], :per_page => 10)
+
   end
 
   # GET /vencimentos/1

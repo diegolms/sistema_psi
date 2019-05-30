@@ -1,4 +1,4 @@
-<div class="breadcrumbs">
+﻿<div class="breadcrumbs">
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
@@ -28,6 +28,41 @@
 						</button>
 					  </div>
 				<% end %>
+				
+				<div class="row">
+					<div class="col-md-12">
+	                        <div class="card">
+	                            <div class="card-header">
+	                                <strong class="card-title mb-3">Filtro</strong>
+	                            </div>
+	                            <div class="card-body">
+									<%= form_for(:vencimento, :url => vencimentos_path, :html => {:class => :form, :method => :get}) do |form| -%>
+									
+											<div class="form-row">
+												<div class="form-group col-md-2">
+												   <label>Mês/Ano</label>
+												   <%= form.select :mes, @meses.each.map {|l| [l.data.strftime("%m/%Y"), l.data]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+                  
+												</div>
+																	
+												<% if current_user.isAdmin? %>								
+													<div class="form-group col-md-4">
+															  <label for="inputState">Apartamento</label>
+															  <%= form.select :pessoa_id, @pessoas.each.map {|l| [( l.id == 1 ? l.nome : l.numero+" - "+l.nome), l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+															  
+													</div>	
+												<% end %>	
+											</div>
+											
+											<%= form.submit 'Pesquisar', class:"btn btn-primary btn-sm m-b-30 m-t-30", style: "color: white" %>											
+																				
+									<% end %>     
+	                            </div>
+												
+                                              
+	                        </div>
+	                    </div>
+				</div>
 
 				
             <!--div class="animated fadeIn"-->

@@ -146,6 +146,7 @@ $( document ).ready(function() {
 												<div class="form-group col-md-6">
 												  <label for="inputState">Apartamento</label>
 												  <%= form.select :pessoa_id, Pessoa.where(:ativo => Constantes::ATIVO).order("id asc").each.map {|l| [( l.id == 1 ? l.nome : l.numero+" - "+l.nome), l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+												  <%= form.select :pessoa_id, Pessoa.where(:ativo => Constantes::ATIVO).order("id asc").each.map {|l| [( l.id == 1 ? l.nome : l.numero+" - "+l.nome), l.id]}, :prompt => "Selecione", :multiple => true,{:class => 'form-control'} %>	
 												  <!--<%= form.check_box :condominio %> Condomínio -->
 												</div>
 												
