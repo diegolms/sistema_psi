@@ -51,6 +51,12 @@
 															  <%= form.select :pessoa_id, @pessoas.each.map {|l| [( l.id == 1 ? l.nome : l.numero+" - "+l.nome), l.id]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
 															  
 													</div>	
+
+													<div class="form-group col-md-2">
+															  <label for="inputState">Status</label>
+															  <%= form.select :status, Vencimento::STATUS.each.map {|l| [l[0], l[1] ]}, {:include_blank => 'Selecione'}, {:class => 'form-control'} %>
+															  
+													</div>	
 												<% end %>	
 											</div>
 											

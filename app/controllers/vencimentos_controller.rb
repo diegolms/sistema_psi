@@ -16,7 +16,6 @@ class VencimentosController < ApplicationController
 	  conditions = 	current_user.isAdmin? ? "pessoa_id is not null" : "pessoa_id = #{current_user.pessoa.id}"
     @meses = Vencimento.distinct.pluck(:data)
     
-    #@meses = Vencimento.dis
 	  @pessoas = Pessoa.where(:ativo => Constantes::ATIVO).where.not(id: 1).order("id asc")
 	  
 	  if !params[:vencimento].nil?
@@ -28,6 +27,10 @@ class VencimentosController < ApplicationController
 			
 			 if !params[:vencimento][:pessoa_id].empty?
 				conditions += " and pessoa_id = '#{params[:vencimento][:pessoa_id]}'"	  
+      end
+      
+      if !params[:vencimento][:status].empty?
+				conditions += " and status = '#{params[:vencimento][:status]}'"	  
 			end
 			
 	  end
