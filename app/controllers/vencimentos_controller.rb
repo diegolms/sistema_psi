@@ -14,7 +14,7 @@ class VencimentosController < ApplicationController
 		p "params #{params}"
 		
 	  conditions = 	current_user.isAdmin? ? "pessoa_id is not null" : "pessoa_id = #{current_user.pessoa.id}"
-    @meses = Vencimento.distinct.pluck(:data)
+    @meses = Vencimento.order("data desc").distinct.pluck(:data)
     
 	  @pessoas = Pessoa.where(:ativo => Constantes::ATIVO).where.not(id: 1).order("id asc")
 	  
@@ -35,7 +35,7 @@ class VencimentosController < ApplicationController
 			
 	  end
 	 	  
-      @vencimentos = Vencimento.where(conditions).order("vencimentos.id asc, data").paginate(:page => params[:page], :per_page => 10)
+      @vencimentos = Vencimento.where(conditions).order("vencimentos.id desc, data").paginate(:page => params[:page], :per_page => 10)
 
   end
 
