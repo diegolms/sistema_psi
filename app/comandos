@@ -1,0 +1,2 @@
+heroku run bash - acessar pastas
+heroku pg:psql  - abrir banco de dados
