@@ -318,8 +318,14 @@ class RelatoriosController < ApplicationController
 		  
 		  if(caixa_atual == 0)
 			pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo de #{formatar_numero(caixa_atual)}.", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
-		  else
-			pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo positivo de #{formatar_numero(caixa_atual)} (#{Extenso.moeda(caixa_atual.to_f.to_s.gsub(".","").to_i)}).", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
+			else
+				if caixa_atual < 0 
+					caixa_atual = caixa_atual * (-1)
+					pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo positivo de #{formatar_numero(caixa_atual)} (#{Extenso.moeda(caixa_atual.to_f.to_s.gsub(".","").to_i)} - Negativo).", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold
+				else
+					pdf.text_box "Conforme prestação de contas acima, mostramos como resultado um saldo positivo de #{formatar_numero(caixa_atual)} (#{Extenso.moeda(caixa_atual.to_f.to_s.gsub(".","").to_i)}).", :at => [address_x,  pdf.cursor], :align => :left, :style => :bold	
+				end			
+			
 		  end
 		  
 
