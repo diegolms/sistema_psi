@@ -24,7 +24,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: jesusdoportov_development
+  database: sistema_psi_development
   pool: 5
   username: diegolopes
   password: 12345
@@ -50,7 +50,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: jesusdoportov_test
+  database: sistema_psi_test
   pool: 5
   username: diegolopes
   password: 12345
@@ -58,7 +58,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: jesusdoportov_production
+  database: sistema_psi_production
   pool: 5
-  username: jesusdoportov
-  password: <%= ENV['JESUSDOPORTOV_DATABASE_PASSWORD'] %>
+  username: sistema_psi
+  password: <%= ENV['SISTEMAPSI_DATABASE_PASSWORD'] %>

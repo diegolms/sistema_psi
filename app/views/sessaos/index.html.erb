@@ -1,0 +1,85 @@
+<div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Sessões</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+							      <li>Gerencial</li>
+                           <li>Clientes</li>
+                            <li class="active">Sessões</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+		
+				<% flash.each do |key, value| %>
+					  <div class="alert  alert-success alert-dismissible fade show" role="alert">
+						<span class="badge badge-pill badge-success">Successo</span> <%= value %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+				<% end %>
+
+				
+            <!--div class="animated fadeIn"-->
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+							
+								<div class="card-header">
+                                    <div class="text-left dib">
+                                          <div class="stat-heading"><%= @cliente.nome.upcase %></div>
+                                          <div class="stat-text">Total: <%= @sessaos.total_entries %></div>
+                                    </div>
+                                 <small>
+                                    <span class="badge badge-success float-right mt-1">
+                                       <button type="button" class="btn btn-success btn-sm m-b-30 m-t-30" data-toggle="modal" data-target="#smallmodal" data-id="<%= params[:controller] %>">
+                                          Nova Sessão
+                                       </button>   
+                                    </span>
+                                 </small>
+                              
+                        </div>
+							
+                            <div class="card-body">
+                                <div class="table-responsive-sm">
+																	<table class="table">
+																	<thead>
+																		<tr>
+																		<th scope="col">Data</th>
+																		</tr>
+																	</thead>
+																		<tbody>
+																			<% @sessaos.each do |sessao| %>
+																				<tr>
+																				   <td><%= sessao.data %></td>																			
+																				</tr>
+																			<% end %>
+																		</tbody>
+																	</table>
+								</div>
+								
+								<%= will_paginate @sessaos , previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            <!--/div--><!-- .animated -->
+        </div><!-- .content -->
+		
+		 
+
+		

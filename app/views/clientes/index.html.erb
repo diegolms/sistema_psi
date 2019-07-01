@@ -1,0 +1,89 @@
+<div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Clientes</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+							      <li>Gerencial</li>
+                            <li class="active">Clientes</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+		
+				<% flash.each do |key, value| %>
+					  <div class="alert  alert-success alert-dismissible fade show" role="alert">
+						<span class="badge badge-pill badge-success">Successo</span> <%= value %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+				<% end %>
+
+				
+            <!--div class="animated fadeIn"-->
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+							
+								<div class="card-header">
+								
+									<%= link_to new_cliente_path, class: "btn btn-success btn-sm", style: "color: white" do %>
+																			<i class="fa fa-plus"></i> Cadastrar
+									<% end %>
+								</div>
+							
+                            <div class="card-body">
+                                <div class="table-responsive-sm">
+																	<table class="table">
+																	<thead>
+																		<tr>
+																		<th scope="col">Nome</th>
+																		<th scope="col"></th>
+																		<th scope="col"></th>
+																		</tr>
+																	</thead>
+																		<tbody>
+																			<% @clientes.each do |cliente| %>
+																				<tr>
+																				   <td><%= cliente.nome %></td>
+																				
+																					<td>
+																					<%= link_to edit_cliente_path(cliente), class: "btn btn-primary btn-sm", style: "color: white" do %>
+																						<i class="fa fa-edit"></i>&nbsp; Editar
+																					<% end %>
+																					</td>
+																					<td>
+																					<%= link_to sessaos_path(:cliente => cliente), class: "btn btn-primary btn-sm", style: "color: white" do %>
+																						<i class="fa fa-edit"></i>&nbsp; Sessões
+																					<% end %>
+																					</td>																				
+																				</tr>
+																			<% end %>
+																		</tbody>
+																	</table>
+								</div>
+								
+								<%= will_paginate @clientes , previous_label: '&laquo;', next_label: '&raquo;', renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            <!--/div--><!-- .animated -->
+        </div><!-- .content -->
+		
+		 
+
+		

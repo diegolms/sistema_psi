@@ -1,14 +1,8 @@
 Rails.application.routes.draw do
-  resources :vencimentos
+  resources :sessaos
+  resources :clientes
   resources :caixas
-  resources :lancamentos
-  resources :categoria
-  resources :pessoas
   devise_for :users
-
-  resources :lancamentos do
-    get :download_resume
-  end
 
   resources :relatorios do
     collection do
@@ -20,6 +14,6 @@ Rails.application.routes.draw do
 
   get "/relatorios/show", to: redirect("/relatorios/new")
 
-  root to: "pages#index"
+  root to: "clientes#index"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

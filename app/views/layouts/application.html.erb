@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Jesus do Porto V</title>
+    <title>Gabriel Trajano - Psicólogo</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -44,9 +44,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p style="color:red">
-                                   Deseja realmente apagar?
-                                </p>
+                                <label for="inputPassword4">Data</label>
+												  <%= text_field :data, :sessao, :value => "#{Time.now.strftime("%d/%m/%Y")}"  %>
+											
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -60,34 +60,39 @@
                     <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="smallmodalLabel">Alerta</h5>
+                                <h5 class="modal-title" id="smallmodalLabel">Nova Sessão</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>
-                                    Alterar status do Vencimento:
-                                </p>
-								
-								<select name="status" id="status">
-								  <option value="2">PAGO</option>
-								</select>
+                                         
+												  <label for="inputPassword4">Data</label>
+												  <%= text_field :sessao, :data, :value => "#{Time.now.strftime("%d/%m/%Y")}"  %>
+												
+                              
 
 								
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button id="modal_alterar_status" class="btn btn-primary" data-dismiss="modal">Alterar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                <button id="modal_criar_sessao" class="btn btn-primary" data-dismiss="modal">Criar</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                
 				
 </html>
 
 <script>
-	
+
+    $( document ).ready(function() {
+        $('#sessao_data').datepicker();
+
+    });
+
 	var id;
 
 	$('#staticModal').on('show.bs.modal', function (e) {
@@ -106,11 +111,11 @@
 	});
 	
 	
-	$('#modal_alterar_status').click(function(e) {
+	$('#modal_criar_sessao').click(function(e) {
 		$.ajax({
-			type: "DELETE",
-			url: id,
-			data: { status: $('#status').val()}
+			type: "POST",
+			data: { sessao_data: $('#sessao_data').val(),
+                    cliente: '<%= @cliente.id if !@cliente.nil? %>'}
 			
 			
 		})
